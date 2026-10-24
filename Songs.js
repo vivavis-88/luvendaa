@@ -250,6 +250,7 @@
         mini.id = 'npMini';
         mini.innerHTML = `
         <div class="np-card" role="region" aria-label="Music player">
+            <span class="np-grip" role="button" aria-label="Drag to move the player" title="Drag to move. Double-tap to put it back."></span>
             <div class="np-top">
                 ${DISC}
                 <div class="np-text">
@@ -267,10 +268,56 @@
             </div>
         </div>
         <div class="np-pill">
+            <span class="np-grip" role="button" aria-label="Drag to move the player" title="Drag to move. Double-tap to put it back."></span>
             <button type="button" class="np-expand" id="npExpand" aria-label="Show music player">${DISC}${EQ}</button>
             <button type="button" class="sg-btn js-play" aria-label="Play"></button>
         </div>`;
         document.body.append(mini);
+    }
+
+    /* Drag the player anywhere (grip bar on the card, dots on the pill). Position is remembered. Double-tap the grip to reset. */
+    const K_POS = 'songs.minipos';
+    function placeMini() {
+        const p = get(K_POS, null);
+        if (!p || typeof p.x !== 'number') { mini.classList.remove('is-free'); return; }
+        const r = mini.getBoundingClientRect(), w = r.width || 320, h = r.height || 90;
+        const x = Math.min(Math.max(6, p.x * innerWidth), Math.max(6, innerWidth - w - 6));
+        const y = Math.min(Math.max(6, p.y * innerHeight), Math.max(6, innerHeight - h - 6));
+        mini.style.setProperty('--x', x + 'px'); mini.style.setProperty('--y', y + 'px');
+        mini.classList.add('is-free');
+    }
+    function bindMiniDrag() {
+        let sx = 0, sy = 0, ox = 0, oy = 0, id = null;
+        mini.addEventListener('pointerdown', e => {
+            const g = e.target.closest('.np-grip');
+            if (!g || (e.pointerType === 'mouse' && e.button !== 0)) return;
+            const r = mini.getBoundingClientRect();
+            ox = r.left; oy = r.top; sx = e.clientX; sy = e.clientY; id = e.pointerId;
+            try { g.setPointerCapture(id); } catch (x) { /* ignore */ }
+            mini.style.setProperty('--x', ox + 'px'); mini.style.setProperty('--y', oy + 'px');
+            mini.classList.add('is-free', 'is-dragging');
+            e.preventDefault();
+        });
+        mini.addEventListener('pointermove', e => {
+            if (e.pointerId !== id) return;
+            const r = mini.getBoundingClientRect();
+            const x = Math.min(Math.max(6, ox + e.clientX - sx), Math.max(6, innerWidth - r.width - 6));
+            const y = Math.min(Math.max(6, oy + e.clientY - sy), Math.max(6, innerHeight - r.height - 6));
+            mini.style.setProperty('--x', x + 'px'); mini.style.setProperty('--y', y + 'px');
+        });
+        const end = e => {
+            if (e.pointerId !== id) return;
+            id = null; mini.classList.remove('is-dragging');
+            const r = mini.getBoundingClientRect();
+            put(K_POS, { x: r.left / innerWidth, y: r.top / innerHeight });
+        };
+        mini.addEventListener('pointerup', end); mini.addEventListener('pointercancel', end);
+        mini.addEventListener('dblclick', e => {
+            if (!e.target.closest('.np-grip')) return;
+            put(K_POS, null); mini.classList.remove('is-free');
+        });
+        window.addEventListener('resize', placeMini);
+        placeMini();
     }
 
     /* ---------- list ---------- */
@@ -373,7 +420,13 @@
         $$('.js-artist').forEach(n => { n.textContent = cur ? cur.artist : 'Search for a song to start'; });
         $$('.js-state').forEach(n => { n.textContent = playing ? 'Now playing' : (cur ? 'Paused' : 'Music'); });
         $$('.js-play').forEach(b => { b.innerHTML = playing ? ICON.pause : ICON.play; b.setAttribute('aria-label', playing ? 'Pause' : 'Play'); });
-        [mini, $('#sgPlayer'), ...$$('.sg-display')].forEach(n => n && n.classList.toggle('is-playing', playing));
+        const art = artOf(cur);
+        [mini, $('#sgPlayer'), ...$$('.sg-display')].forEach(n => {
+            if (!n) return;
+            n.classList.toggle('is-playing', playing);
+            n.classList.toggle('has-art', !!art);
+            n.style.setProperty('--art', art ? 'url("' + art.replace(/"/g, '%22') + '")' : 'none');
+        });
         $$('.sg-track').forEach(b => {
             const on = !!cur && b.dataset.key === cur.key;
             b.classList.toggle('is-current', on);
@@ -408,6 +461,8 @@
 
     /* ---------- YouTube engine (official embed player, kept hidden, audio only) ---------- */
     const isYT = t => !!t && t.source === 'youtube';
+    /* Cover picture for a song: YouTube songs always use their own video thumbnail (16:9, no black bars). */
+    const artOf = t => !t ? '' : (isYT(t) && /^[\w-]{11}$/.test(t.src || '') ? 'https://i.ytimg.com/vi/' + t.src + '/mqdefault.jpg' : (t.art || ''));
     function ytApi() {
         if (window.YT && window.YT.Player) return Promise.resolve();
         return new Promise((res, rej) => {
@@ -499,7 +554,7 @@
     function session() {
         if (!cur || !('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return;
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: cur.title, artist: cur.artist, artwork: cur.art ? [{ src: cur.art, sizes: '200x200' }] : []
+            title: cur.title, artist: cur.artist, artwork: artOf(cur) ? [{ src: artOf(cur), sizes: '320x180' }] : []
         });
     }
     function bindSession() {
@@ -645,7 +700,7 @@
         loadAssets();
         if (typeof saved.v === 'number' && saved.v >= 0 && saved.v <= 1) audio.volume = saved.v;
         if (!injectView()) return;
-        injectMini();
+        injectMini(); bindMiniDrag();
         bindAudio(); bindSession(); bind();
         if (cur && !isYT(cur)) { audio.src = cur.src; audio.loop = true; }
         searchMsg = 'Type a song or artist name to search.';
