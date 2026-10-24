@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" data-device="laptop">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#021024">
+    <script>
+        /* Theme bootstrap: runs before any CSS paints so a saved theme never flashes the wrong look.
+           No valid saved choice => Normal, and the pre-login picker (data-theme-gate) is shown. */
+        (function () {
+            var root = document.documentElement, saved = null;
+            try {
+                var v = localStorage.getItem('site-theme');
+                if (v === 'sunset' || v === 'normal' || v === 'winter') saved = v;
+            } catch (e) { /* storage blocked: behave as first visit */ }
+            var theme = saved || 'normal';
+            root.setAttribute('data-theme', theme);
+            if (!saved) root.setAttribute('data-theme-gate', '');
+            var bar = { sunset: '#2E1426', normal: '#021024', winter: '#E6F1FC' };
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', bar[theme]);
+        })();
+    </script>
+    <title>A little something for you</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="jar.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="intro.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="Songs.css">
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<!-- ============ THEME PICKER (shown once, before login, until a theme is saved) ============ -->
+<div class="theme-gate" id="themeGate" role="dialog" aria-modal="true" aria-labelledby="gateTitle" aria-describedby="gateDesc">
+    <div class="gate-aurora" aria-hidden="true"></div>
+    <div class="gate-stars" aria-hidden="true"></div>
+    <div class="gate-inner">
+        <p class="gate-script" aria-hidden="true">Before you enter</p>
+        <h1 id="gateTitle">Choose how it feels in here</h1>
+        <p class="gate-desc" id="gateDesc">Pick a look for the whole website. You can change it any time.</p>
+
+        <div class="theme-options" role="radiogroup" aria-label="Website theme">
+            <button type="button" class="theme-card" role="radio" aria-checked="false" tabindex="-1" data-theme-option="sunset">
+                <span class="tc-preview" aria-hidden="true">
+                    <span class="tc-bg"></span><i class="tc-sun"></i>
+                    <span class="tc-ui"><i class="tc-line"></i><i class="tc-line short"></i><i class="tc-pill"></i></span>
+                </span>
+                <span class="tc-body">
+                    <span class="tc-name">Sunset</span>
+                    <span class="tc-desc">Golden hour. Warm coral, soft peach and a slow amber glow.</span>
+                    <span class="tc-swatches" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                </span>
+                <span class="tc-check" aria-hidden="true"></span>
+            </button>
+
+            <button type="button" class="theme-card" role="radio" aria-checked="true" tabindex="0" data-theme-option="normal">
+                <span class="tc-preview" aria-hidden="true">
+                    <span class="tc-bg"></span><i class="tc-star"></i><i class="tc-star"></i><i class="tc-star"></i><i class="tc-star"></i><i class="tc-star"></i>
+                    <span class="tc-ui"><i class="tc-line"></i><i class="tc-line short"></i><i class="tc-pill"></i></span>
+                </span>
+                <span class="tc-body">
+                    <span class="tc-name">Normal</span>
+                    <span class="tc-desc">The original midnight look. Deep navy, ice blue and twinkling stars.</span>
+                    <span class="tc-swatches" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                </span>
+                <span class="tc-check" aria-hidden="true"></span>
+            </button>
+
+            <button type="button" class="theme-card" role="radio" aria-checked="false" tabindex="-1" data-theme-option="winter">
+                <span class="tc-preview" aria-hidden="true">
+                    <span class="tc-bg"></span><i class="tc-flake"></i><i class="tc-flake"></i><i class="tc-flake"></i><i class="tc-flake"></i><i class="tc-flake"></i>
+                    <span class="tc-ui"><i class="tc-line"></i><i class="tc-line short"></i><i class="tc-pill"></i></span>
+                </span>
+                <span class="tc-body">
+                    <span class="tc-name">Winter</span>
+                    <span class="tc-desc">A frosted morning. Snowy white, icy blue and drifting snow.</span>
+                    <span class="tc-swatches" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                </span>
+                <span class="tc-check" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        <button type="button" class="gate-continue" id="gateContinue"><span>Enter the website</span><i aria-hidden="true"></i></button>
+    </div>
+</div>
+<p class="sr-only" id="themeLive" role="status" aria-live="polite"></p>
+
+<main class="app" id="app">
+
+    <!-- ============ 1. LOGIN ============ -->
+    <section class="view view-login is-active" data-view="login" aria-labelledby="login-title">
+        <div class="stage stage-center">
+            <form class="card login-card" id="loginForm" novalidate>
+                <div class="line-art" id="loginLine" aria-hidden="true"><i class="dot"></i><i class="seg"></i><i class="gap"></i><i class="seg"></i><i class="dot"></i></div>
+                <p class="label">Private</p>
+                <h1 id="login-title">Where my wonder lives <3</h1>
+                <p class="muted">Password pweasee!</p>
+
+                <label class="sr-only" for="loginPassword">Password</label>
+                <div class="field" id="loginField">
+                    <input id="loginPassword" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Password">
+                    <button type="button" class="field-toggle" id="loginToggle" aria-label="Show password" aria-pressed="false">Show</button>
+                </div>
+                <p class="error" id="loginError" role="alert" aria-live="polite"></p>
+
+                <button type="submit" class="btn btn-primary btn-block">Open your gift</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============ 2. INTRO (Click-to-Continue Sequence) ============ -->
+    <section class="view view-intro" data-view="intro" aria-label="Introduction" hidden>
+        <div class="stage stage-center intro-stage">
+            <div class="intro-messages" aria-live="polite">
+                <!-- Step 1 -->
+                <div class="intro-step is-active" data-step="1">
+                    <h2 class="intro-title">Greetings to you, my beloved</h2>
+                    <button type="button" class="btn btn-light intro-next" data-next="2">(click to continue)</button>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="intro-step" data-step="2" hidden>
+                    <h2 class="intro-title">Here lies a vault of my adoration for you. </h2>
+                    <button type="button" class="btn btn-light intro-next" data-next="3">(click to continue)</button>
+                </div>
+
+                <!-- Step 3: Device Selection -->
+                <div class="intro-step" data-step="3" hidden>
+                    <h2 class="intro-title">Before we begin, choose which device you are in</h2>
+                    <div class="device-group" role="group" aria-label="Device Selection">
+                        <button type="button" class="device-btn" data-device="mobile" aria-pressed="false">Mobile</button>
+                        <button type="button" class="device-btn" data-device="tablet" aria-pressed="false">Tablet</button>
+                        <button type="button" class="device-btn" data-device="laptop" aria-pressed="false">Laptop</button>
+                    </div>
+                    <button type="button" class="btn btn-light intro-next" data-next="4" id="deviceNextBtn" disabled>(click to continue)</button>
+                </div>
+
+                <!-- Step 4: Are you ready? -->
+                <div class="intro-step" data-step="4" hidden>
+                    <h2 class="intro-title">You may now proceed!</h2>
+                    <button type="button" class="btn btn-light intro-next" id="introFinish">(click to continue)</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ 3. MAIN: GREETING LETTER ============ -->
+    <section class="view view-main" data-view="main" aria-labelledby="main-title" hidden>
+        <div class="stage">
+            <header class="page-head">
+                <p class="label">To whom my heart belongs, Avee.</p>
+                <h1 id="main-title">Birthday letter dedicated for you!</h1>
+                <p class="muted" id="letterHint">Tap the envelope to open it.</p>
+                <p class="clocks" id="clocks" hidden></p>
+            </header>
+
+            <div class="envelope-wrap" id="greetingWrap">
+                <div class="env-collapse">
+                    <div class="env-clip">
+                        <div class="env-holder">
+                            <button type="button" class="envelope" id="greetingEnvelope" aria-expanded="false" aria-label="Open your birthday letter">
+                                <span class="env-back"></span>
+                                <span class="env-sheet"></span>
+                                <span class="env-flap"></span>
+                                <span class="env-front"><span class="env-to">For Avee</span><span class="postmark">Oct 9</span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="letter-collapse">
+                    <div class="letter-clip">
+                        <article class="letter-paper">
+                            <figure class="letter-figure has-image zoomable-trigger">
+                                <img src="birthday.png" alt="Birthday Letter" class="letter-image" id="mainLetterImg">
+                                <div class="letter-image-placeholder">
+                                    <span>birthday.png</span>
+                                </div>
+                                <span class="zoom-hint">Click to zoom HD</span>
+                            </figure>
+                            <div class="letter-actions">
+                                <button type="button" class="btn btn-ghost" id="closeLetterBtn">Close letter</button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <section class="next-block" aria-labelledby="next-title">
+                <h2 id="next-title">Meron pa here, baby. Open mo!</h2>
+                <button type="button" class="btn btn-primary" id="toOpenWhen">Open the next page</button>
+            </section>
+        </div>
+    </section>
+
+    <!-- ============ 4. OPEN WHEN ============ -->
+    <section class="view view-openwhen" data-view="openwhen" aria-labelledby="ow-title" hidden>
+        <div class="stage">
+            <nav class="topnav" aria-label="Page navigation">
+                <button type="button" class="btn btn-ghost btn-small" id="owBack">Back</button>
+                <button type="button" class="btn btn-ghost btn-small" id="owHome">Home</button>
+            </nav>
+
+            <header class="page-head">
+                <h1 id="ow-title">Open When...</h1>
+                <p class="muted">For the moments when you need a little something from me.</p>
+            </header>
+
+            <!-- Gapless Grid Layout -->
+            <ul class="ow-grid">
+                <li><button type="button" class="env-card" data-card="missMe">
+                    <span class="env-card-flap"></span>
+                    <div class="env-card-body">
+                        <span class="ow-title">Open when you miss me</span>
+                        <span class="ow-desc">For the days na mimiss mo akoe..</span>
+                    </div>
+                </button></li>
+
+                <li><button type="button" class="env-card" data-card="sad">
+                    <span class="env-card-flap"></span>
+                    <div class="env-card-body">
+                        <span class="ow-title">Open when you are sad</span>
+                        <span class="ow-desc">For when you feel like you have lost hope.</span>
+                    </div>
+                </button></li>
+
+                <li><button type="button" class="env-card" data-card="happy">
+                    <span class="env-card-flap"></span>
+                    <div class="env-card-body">
+                        <span class="ow-title">Open when you feel happy</span>
+                        <span class="ow-desc">For the good days worth rejoicing!</span>
+                    </div>
+                </button></li>
+
+                <li><button type="button" class="env-card" data-card="notInMood">
+                    <span class="env-card-flap"></span>
+                    <div class="env-card-body">
+                        <span class="ow-title">Open when you are not in the mood</span>
+                        <span class="ow-desc">For when nothing seems right..</span>
+                    </div>
+                </button></li>
+
+                <li><button type="button" class="env-card" data-card="needTo">
+                    <span class="env-card-flap"></span>
+                    <div class="env-card-body">
+                        <span class="ow-title">Open when you need to!</span>
+                        <span class="ow-desc">For whenever you need me most.</span>
+                    </div>
+                </button></li>
+            </ul>
+
+            <footer class="line-end">
+                <div class="line-art is-connected" aria-hidden="true"><i class="dot"></i><i class="seg"></i><i class="gap"></i><i class="seg"></i><i class="dot"></i></div>
+                <p>Until next time.</p>
+            </footer>
+        </div>
+    </section>
+</main>
+
+<!-- ============ PASSWORD MODAL ============ -->
+<div class="overlay modal-overlay" id="pwOverlay" hidden>
+    <div class="modal card" role="dialog" aria-modal="true" aria-labelledby="pwTitle" aria-describedby="pwText">
+        <h2 id="pwTitle">This one is just for you.</h2>
+        <p class="muted" id="pwText">Enter the password to open it.</p>
+        
+        <div id="pwConfirmSection" class="confirm-section">
+            <p id="confirmQuestion" class="confirm-question"></p>
+            <div class="confirm-buttons">
+                <button type="button" class="btn btn-primary btn-small" id="confirmYes">Yes</button>
+                <button type="button" class="btn btn-ghost btn-small" id="confirmNo">No</button>
+            </div>
+        </div>
+
+        <form id="pwForm" novalidate>
+            <label class="sr-only" for="pwInput">Password</label>
+            <div class="field" id="pwField">
+                <input id="pwInput" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Password">
+                <button type="button" class="field-toggle" id="pwToggle" aria-label="Show password" aria-pressed="false">Show</button>
+            </div>
+            <p class="hint" id="pwHint" hidden></p>
+            <button type="button" class="hold-btn" id="pwHold" hidden aria-label="Hold to open"><span class="hold-fill"></span><span>Hold to open</span></button>
+            <p class="error" id="pwError" role="alert" aria-live="polite"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" id="pwCancel">Cancel</button>
+                <button type="submit" class="btn btn-primary">Open</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============ PRIVATE LETTER (PNG DISPLAY) ============ -->
+<div class="overlay letter-overlay" id="privateOverlay" hidden>
+    <div class="private-panel" role="dialog" aria-modal="true" aria-label="Private letter">
+        <div class="envelope-wrap" id="privateWrap">
+            <div class="env-collapse">
+                <div class="env-clip">
+                    <div class="env-holder">
+                        <div class="envelope is-static" aria-hidden="true">
+                            <span class="env-back"></span>
+                            <span class="env-sheet"></span>
+                            <span class="env-flap"></span>
+                            <span class="env-front"><span class="env-to" id="privateTo">For Avee</span><span class="postmark">Oct 9</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="letter-collapse">
+                <div class="letter-clip">
+                    <article class="letter-paper">
+                        <div class="letter-content">
+                            <h2 id="privateTitle" style="text-align:center; margin-bottom: 0.75rem;"></h2>
+                            <figure class="letter-figure has-image zoomable-trigger">
+                                <img id="privateImage" src="" alt="Canva Letter Design" class="letter-image">
+                                <div class="letter-image-placeholder">
+                                    <span>Loading letter graphic...</span>
+                                </div>
+                                <span class="zoom-hint">Click to zoom HD</span>
+                            </figure>
+                        </div>
+                        <div class="letter-actions" style="margin-top: 1.25rem;">
+                            <button type="button" class="btn btn-ghost" id="privateBack">Back to cards</button>
+                            <button type="button" class="btn btn-primary" id="privateClose">Close letter</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ LIGHTBOX ZOOM MODAL (HD VIEW) ============ -->
+<div class="overlay lightbox-overlay" id="lightboxOverlay" hidden>
+    <div class="lightbox-content">
+        <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close zoom">&times;</button>
+        <img id="lightboxImg" src="" alt="Enlarged HD Letter">
+    </div>
+</div>
+   <script src="script.js"></script>
+   <script src="dedication.js"></script>
+   <script src="menu.js"></script>
+   <script src="jar.js"></script>
+   <script src="intro.js"></script>
+   <script src="main.js"></script>
+   <script src="theme.js"></script>
+   <script src="songs-library.js"></script>
+   <script src="Songs.js"></script>
+
+</body>
+</html>

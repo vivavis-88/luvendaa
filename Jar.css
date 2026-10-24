@@ -1,0 +1,113 @@
+/* Jar of Reasons: ADDITIVE styles (load after style.css and dedication.css) */
+:root { --jar-css: 1; }
+
+/* ---------- Jar page ---------- */
+.view-jar { --jar-navy: var(--navy, #04245a); }
+.view-jar [hidden] { display: none !important; }
+.jar-stage { display: flex; flex-direction: column; align-items: center; margin: 1.5rem 0 .5rem; width: 100%; }
+
+/* Background scene behind the jar */
+.jar-scene {
+    position: relative; isolation: isolate; width: min(100%, 420px); box-sizing: border-box;
+    padding: 120px 0 0; display: flex; justify-content: center; overflow: hidden; border-radius: 28px;
+    border: 1px solid var(--border, #9CC3E6);
+    background:
+        radial-gradient(90% 60% at 50% 0%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%),
+        linear-gradient(180deg, var(--jar-sky-a) 0%, var(--jar-sky-b) 55%, var(--jar-sky-c) 100%);
+    box-shadow: 0 24px 46px -26px rgba(var(--ink-rgb),.5);
+}
+.jar-scene::before {
+    content: ""; position: absolute; inset: -20% -10%; z-index: 0; pointer-events: none;
+    background: linear-gradient(115deg, transparent 28%, rgba(255,255,255,.38) 38%, rgba(255,255,255,.08) 46%, transparent 52%, rgba(255,255,255,.22) 62%, transparent 70%);
+}
+.jar-scene::after {
+    content: ""; position: absolute; left: 50%; bottom: 22px; width: 300px; height: 70px; margin-left: -150px; z-index: 0; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(255,255,255,.65), rgba(255,255,255,0));
+}
+.jar-shelf {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 20px; z-index: 2;
+    background: linear-gradient(#D2A675, #A97A4C);
+    box-shadow: inset 0 3px 0 rgba(255,255,255,.35), 0 -6px 14px rgba(40,70,120,.12);
+}
+.jar-spark {
+    position: absolute; left: var(--x, 50%); bottom: 24px; z-index: 0; width: var(--s, 6px); height: var(--s, 6px); border-radius: 50%;
+    background: #fff; box-shadow: 0 0 10px 3px rgba(255,255,255,.9); opacity: 0; pointer-events: none;
+    animation: jarSpark var(--t, 7s) ease-in-out var(--d, 0s) infinite;
+}
+@keyframes jarSpark {
+    0% { opacity: 0; transform: translateY(0) scale(.6); }
+    20% { opacity: .9; }
+    100% { opacity: 0; transform: translateY(-250px) translateX(var(--dx, 14px)) scale(1.1); }
+}
+
+.jar-wrap { position: relative; z-index: 1; width: 250px; height: 320px; flex: none; background: none; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.jar-wrap:focus-visible { outline: 3px solid rgba(var(--steel-rgb),.6); outline-offset: 8px; border-radius: 30px; }
+.jar-glass { position: absolute; left: 30px; top: 30px; width: 190px; height: 270px; border-radius: 30px 30px 58px 58px; border: 3px solid rgba(var(--jar-glass-rgb),.65); background: linear-gradient(100deg, rgba(255,255,255,.75), rgba(var(--jar-glass-tint-rgb),.45) 40%, rgba(255,255,255,.6)); box-shadow: inset 0 -18px 30px rgba(var(--jar-glass-shade-rgb),.35), 0 24px 28px -10px rgba(40,90,160,.35); overflow: hidden; }
+.jar-glass::after { content: ""; position: absolute; left: 14px; top: 22px; width: 16px; height: 190px; border-radius: 10px; background: rgba(255,255,255,.7); }
+.jar-slip { position: absolute; width: 44px; height: 28px; border-radius: 3px; box-shadow: 0 2px 4px rgba(var(--jar-shade-rgb),.25); }
+.jar-slip::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(0,0,0,.12); }
+.jar-label { position: absolute; left: 50%; top: 168px; transform: translateX(-50%) rotate(-3deg); background: #fff9c9; padding: 12px 22px; border-radius: 4px; font: 700 1.25rem 'Montserrat', sans-serif; letter-spacing: .01em; text-align: center; color: #b2365a; box-shadow: 0 3px 8px rgba(40,60,100,.25); z-index: 2; line-height: 1.2; white-space: nowrap; }
+.jar-lid { position: absolute; left: 50%; top: 6px; width: 160px; height: 34px; margin-left: -80px; border-radius: 10px 10px 6px 6px; background: linear-gradient(var(--jar-lid-a), var(--jar-lid-b)); box-shadow: 0 5px 8px rgba(var(--jar-deep-rgb),.35); z-index: 3; transition: transform .45s cubic-bezier(.3,1.5,.5,1); transform-origin: 20% 100%; }
+.jar-lid::before { content: ""; position: absolute; left: 14px; right: 14px; top: 7px; height: 3px; border-radius: 3px; background: rgba(255,255,255,.35); }
+.jar-wrap.is-open .jar-lid { transform: translate(46px,-26px) rotate(18deg); }
+.jar-wrap.is-shaking { animation: jarShake .7s ease-in-out; }
+@keyframes jarShake { 0%,100% { transform: rotate(0); } 15% { transform: rotate(-9deg) translateY(-4px); } 30% { transform: rotate(8deg); } 45% { transform: rotate(-6deg) translateY(-3px); } 60% { transform: rotate(5deg); } 80% { transform: rotate(-2deg); } }
+.jar-fly { position: absolute; left: 97px; top: 70px; width: 56px; height: 36px; border-radius: 4px; background: #fff3a0; box-shadow: 0 4px 10px rgba(var(--jar-shade-rgb),.3); z-index: 4; pointer-events: none; }
+.jar-fly::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(0,0,0,.15); }
+.jar-meta { margin-top: 14px; font-size: .88rem; color: var(--text-muted, #4a6a96); text-align: center; min-height: 2.4em; }
+.jar-stage .btn { margin-top: 20px; min-height: 52px; padding: .7rem 2rem; }
+
+/* ---------- Add a reason (writer only) ---------- */
+.jar-add { width: 100%; max-width: 520px; margin: 1rem auto 3rem; padding: 0 1rem; box-sizing: border-box; }
+.jar-add details { background: linear-gradient(var(--jar-add-a), var(--jar-add-b)); border: 1px solid var(--border, #7ea6d6); border-radius: 18px; padding: 16px 20px; }
+.jar-add summary { cursor: pointer; font-weight: 700; color: var(--jar-navy); list-style: none; display: flex; justify-content: space-between; }
+.jar-add summary::after { content: "+"; font-size: 1.2rem; }
+.jar-add details[open] summary::after { content: "\2013"; }
+.jar-add input, .jar-add textarea { width: 100%; margin-top: 14px; border: 1px solid var(--jar-input-border); border-radius: 14px; padding: 12px 14px; font: 500 .95rem 'Montserrat', sans-serif; color: var(--ink, #0b2a57); background: var(--field-bg); box-sizing: border-box; }
+.jar-add textarea { min-height: 90px; resize: vertical; }
+.jar-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.jar-row .btn { flex: 1 1 140px; margin: 0; min-height: 46px; }
+.jar-hint { font-size: .78rem; color: var(--text-muted, #5b84b8); margin: 12px 0 0; }
+.jar-err { color: #b3261e; font-size: .85rem; margin: 8px 0 0; min-height: 1.1em; }
+.jar-ok { color: #1e7a46; font-size: .85rem; margin: 8px 0 0; min-height: 1.1em; }
+
+/* ---------- Sticky note overlay ---------- */
+.jar-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; background: rgba(var(--jar-deep-rgb),.4); backdrop-filter: blur(5px); z-index: 80; padding: 20px; }
+.jar-overlay.is-on { display: flex; }
+.jar-note { --paper: #fff27a; --paper2: #ffe44f; position: relative; width: min(340px, 86vw); min-height: 300px; padding: 56px 30px 34px; background: linear-gradient(165deg, var(--paper), var(--paper2)); border-radius: 3px 3px 3px 60px / 3px 3px 3px 14px; transform: rotate(-2deg); box-shadow: 0 2px 3px rgba(0,0,0,.15), 0 22px 34px -8px rgba(0,0,0,.45); font-family: 'Montserrat', sans-serif; color: #3b3000; display: flex; flex-direction: column; box-sizing: border-box; }
+.jar-note::before { content: ""; position: absolute; left: 50%; top: -14px; width: 110px; height: 30px; margin-left: -55px; background: rgba(197,232,255,.82); transform: rotate(2deg); box-shadow: 0 2px 5px rgba(0,0,0,.15); }
+.jar-note::after { content: ""; position: absolute; right: 0; bottom: 0; width: 60px; height: 46px; background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,.12) 50%); }
+.jar-note-why { font-weight: 600; font-size: .8rem; margin: 0 0 14px; opacity: .8; }
+.jar-note-txt { font-weight: 700; font-size: 1.45rem; line-height: 1.35; flex: 1; display: flex; align-items: center; overflow-wrap: anywhere; }
+.jar-note-heart { align-self: flex-end; color: #c23a5f; font-size: 1.3rem; margin-top: 14px; }
+.jar-note-actions { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+
+/* ---------- Loading screen ---------- */
+.jar-loader {
+    position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 24px; box-sizing: border-box;
+    background: linear-gradient(160deg, var(--jar-loader-a), var(--jar-loader-b) 60%, var(--jar-loader-c)); color: var(--jar-loader-fg);
+    opacity: 0; visibility: hidden; transition: opacity .38s ease, visibility 0s linear .38s;
+}
+.jar-loader.is-on { opacity: 1; visibility: visible; transition-delay: 0s; }
+.jar-loader-in { display: grid; justify-items: center; gap: 1.4rem; text-align: center; }
+.jar-loader-txt { margin: 0; font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.25; max-width: 18ch; }
+.jar-loader.is-on .jar-loader-txt { animation: jarLoadIn .8s cubic-bezier(.2,.8,.2,1) .15s both; }
+@keyframes jarLoadIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* little paper that folds and unfolds */
+.jar-paper { position: relative; width: 70px; height: 50px; perspective: 400px; }
+.jar-paper i { position: absolute; left: 0; width: 100%; height: 50%; background: #FFF3A0; box-shadow: 0 4px 12px rgba(0,0,0,.3); }
+.jar-paper i:first-child { top: 0; border-radius: 4px 4px 0 0; transform-origin: bottom center; background: #FFE87A; animation: jarFold 1.6s ease-in-out infinite; }
+.jar-paper i:last-child { bottom: 0; border-radius: 0 0 4px 4px; }
+@keyframes jarFold { 0%, 15% { transform: rotateX(180deg); } 55%, 100% { transform: rotateX(0deg); } }
+
+.jar-dots { display: flex; gap: 8px; }
+.jar-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--jar-dot); animation: jarDot 1.1s ease-in-out infinite; }
+.jar-dots i:nth-child(2) { animation-delay: .15s; }
+.jar-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes jarDot { 0%, 100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(-7px); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .jar-wrap.is-shaking, .jar-spark, .jar-paper i, .jar-dots i, .jar-loader.is-on .jar-loader-txt { animation: none; }
+    .jar-lid, .jar-loader { transition: none; }
+}

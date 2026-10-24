@@ -1,0 +1,495 @@
+/* =========================================================
+   THEME SYSTEM: load LAST.
+   - Normal  = no overrides at all (the tokens in style.css :root ARE the original look).
+   - Sunset / Winter = token overrides keyed on <html data-theme="...">.
+   - Also holds the pre-login picker, the in-site switcher and the ambient effects.
+   Every rule that is theme-specific lives under html[data-theme="sunset|winter"],
+   so switching back to Normal leaves nothing behind.
+   ========================================================= */
+
+/* =========================================================
+   1. SUNSET: golden hour. Light pages are cream and peach; the
+      "scene" screens (login, intro, letter, open-when) are dusk.
+   ========================================================= */
+html[data-theme="sunset"] {
+    color-scheme: light;
+    --ink: #2B1511;           --ink-rgb: 43,21,17;
+    --navy: #A63D1A;          --navy-rgb: 166,61,26;      /* primary: burnt coral */
+    --steel: #9A5A12;         --steel-rgb: 154,90,18;     /* accent: golden amber */
+    --sky: #E8A47A;                                       /* secondary: soft peach */
+    --ice: #FFE6CF;
+    --background: #FFF4E8;
+    --surface: #FFF9F2;
+    --surface-soft: #FCE3CF;
+    --text-muted: #7A4A33;
+    --border: #EBC9AE;
+    --error: #9B2226;
+
+    --page-bg: linear-gradient(180deg, #FFE3CB 0%, #FFF4E8 38%, #FBE6D4 100%) fixed;
+    --field-bg: #FFFDF9;
+    --placeholder: #8C6550;
+    --focus-ring: var(--navy);
+
+    --scene-top: #5A2A4E;
+    --scene-mid: #55272F;
+    --scene-bottom: #2E1415;
+    --scene-fg: #FFE6CF;      --scene-fg-rgb: 255,230,207;
+    --scene-strong: #FFF7EE;
+    --scene-glow-rgb: 255,170,110;
+    --scene-line-rgb: 240,160,110;
+    --scene-accent: #F2B48A;
+    --scene-error: #FFB4A6;
+    --scene-shadow-rgb: 20,5,5;
+    --scene-btn-bg: #FFD2A8;
+    --scene-btn-fg: #2B1511;
+    --scene-btn-hover: #FFEBD6;
+    --horizon-rgb: 240,128,84;
+    --glow-a-rgb: 214,100,80;
+    --glow-b-rgb: 150,80,150;
+    --glow-c-rgb: 245,170,90;
+    --glow-d-rgb: 255,214,170;
+    --star-rgb: 255,225,200;
+
+    --env-back-a: #E0A27A;  --env-back-b: #C98258;
+    --env-front-a: #FFE9D6; --env-front-b: #F6CFAE;
+    --env-flap-a: #FFF1E2;  --env-flap-b: #F9DABB;
+    --env-sheet: #FFFBF6;
+    --env-to: #5A2414;
+    --letter-paper: #FFF9F2;
+
+    --panel-a: #FFF9F2;
+    --panel-b: #FBE6D3;
+    --panel-raised: #FFFDF9;
+
+    --jar-sky-a: #FFE9D3; --jar-sky-b: #FBD3B0; --jar-sky-c: #F2B88C;
+    --jar-glass-rgb: 190,115,70;
+    --jar-glass-tint-rgb: 255,232,210;
+    --jar-glass-shade-rgb: 240,175,125;
+    --jar-lid-a: #C2562D; --jar-lid-b: #8E3416;
+    --jar-deep-rgb: 60,22,12;
+    --jar-shade-rgb: 90,40,20;
+    --jar-add-a: #FFFAF3; --jar-add-b: #FDEBDA;
+    --jar-input-border: #E6C3A6;
+    --jar-loader-a: #1E0E10; --jar-loader-b: #4A1F2E; --jar-loader-c: #8A3A2E;
+    --jar-loader-fg: #FFF3E6;
+    --jar-dot: #F4C09A;
+}
+
+/* =========================================================
+   2. WINTER: frosted morning. Everything is light; navy text.
+   ========================================================= */
+html[data-theme="winter"] {
+    color-scheme: light;
+    --ink: #0B1F3A;           --ink-rgb: 11,31,58;
+    --navy: #2A5F93;          --navy-rgb: 42,95,147;      /* primary: deep icy blue */
+    --steel: #4B6FA8;         --steel-rgb: 75,111,168;    /* accent: muted blue-violet */
+    --sky: #9DBBDD;                                       /* secondary: silver blue */
+    --ice: #EAF4FF;
+    --background: #F1F7FD;
+    --surface: #FAFCFF;
+    --surface-soft: #E3EEF9;
+    --text-muted: #3F5B7C;
+    --border: #C9DCEE;
+    --error: #A11D3B;
+
+    --page-bg: linear-gradient(180deg, #E7F2FD 0%, #F4F9FE 38%, #EAF2FA 100%) fixed;
+    --field-bg: #FFFFFF;
+    --placeholder: #566F8D;
+    --focus-ring: var(--navy);
+
+    --scene-top: #FFFFFF;
+    --scene-mid: #E6F1FC;
+    --scene-bottom: #C9DFF4;
+    --scene-fg: #0B2A5E;      --scene-fg-rgb: 11,42,94;
+    --scene-strong: #0B1F3A;
+    --scene-glow-rgb: 120,175,235;
+    --scene-line-rgb: 70,110,165;
+    --scene-accent: #2A5F93;
+    --scene-error: #A11D3B;
+    --scene-shadow-rgb: 30,70,120;
+    --scene-btn-bg: #2A5F93;
+    --scene-btn-fg: #F4F9FF;
+    --scene-btn-hover: #1F4D7C;
+    --horizon-rgb: 170,205,240;
+    --glow-a-rgb: 150,200,245;
+    --glow-b-rgb: 185,170,240;
+    --glow-c-rgb: 200,218,238;
+    --glow-d-rgb: 255,255,255;
+    --star-rgb: 255,255,255;
+
+    --env-back-a: #A9C6E4;  --env-back-b: #8FB2D8;
+    --env-front-a: #F6FBFF; --env-front-b: #DCEBFA;
+    --env-flap-a: #FFFFFF;  --env-flap-b: #E4F0FB;
+    --env-sheet: #FFFFFF;
+    --env-to: #0B2A5E;
+    --letter-paper: #FFFFFF;
+
+    --panel-a: #FFFFFF;
+    --panel-b: #E6F0FA;
+    --panel-raised: #F4F9FF;
+
+    --jar-sky-a: #F4F9FF; --jar-sky-b: #DCEAF9; --jar-sky-c: #BFD8F0;
+    --jar-glass-rgb: 100,145,200;
+    --jar-glass-tint-rgb: 225,240,255;
+    --jar-glass-shade-rgb: 130,175,225;
+    --jar-lid-a: #3A74B0; --jar-lid-b: #1F4D7C;
+    --jar-deep-rgb: 11,31,58;
+    --jar-shade-rgb: 30,60,110;
+    --jar-add-a: #FFFFFF; --jar-add-b: #EDF4FC;
+    --jar-input-border: #BBD2EA;
+    --jar-loader-a: #F4F9FF; --jar-loader-b: #DCEAF9; --jar-loader-c: #BFD8F0;
+    --jar-loader-fg: #0B2A5E;
+    --jar-dot: #6FA3D8;
+}
+
+/* ---------- Per-theme touch-ups that tokens alone can't express ---------- */
+
+/* Sunset: scenes are dark, so focus rings there must be light */
+html[data-theme="sunset"] :is(.view-login, .view-intro, .view-main, .view-openwhen) { --focus-ring: var(--scene-fg); }
+
+/* Both themes: the login field edge is clearly visible (the original is a faint 14% line) */
+html:is([data-theme="sunset"], [data-theme="winter"]) .view-login .field { border-color: rgba(var(--scene-fg-rgb), .42); }
+html:is([data-theme="sunset"], [data-theme="winter"]) .view-login .field:focus-within { border-color: rgba(var(--scene-fg-rgb), .8); }
+html[data-theme="winter"] .view-login .field input::placeholder { color: var(--placeholder); }
+
+/* Winter: stars and rising specks are replaced by drifting snow (see .theme-fx) */
+html[data-theme="winter"] .login-sky { opacity: 0; }
+html[data-theme="sunset"] .login-sky { opacity: .45; }
+
+/* Winter: the envelope seal ring and the open-when "wax dots" read better with a softer edge */
+html[data-theme="winter"] .env-card { box-shadow: 0 18px 34px -16px rgba(var(--scene-shadow-rgb), .45), inset 0 -40px 60px -40px rgba(0,0,0,.06); }
+
+/* =========================================================
+   3. SMOOTH SWITCH
+   View Transitions cross-fade the whole page (gradients included).
+   Browsers without them get a short colour fade instead.
+   ========================================================= */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .65s; animation-timing-function: var(--ease); }
+html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after {
+    transition-property: background-color, color, border-color, box-shadow, fill, stroke !important;
+    transition-duration: .5s !important;
+}
+
+/* =========================================================
+   4. AMBIENT EFFECTS (injected by theme.js, only for Sunset / Winter)
+   Fixed, click-through, small and soft: never covers text or controls.
+   ========================================================= */
+.theme-fx { position: fixed; inset: 0; z-index: 35; pointer-events: none; overflow: hidden; display: none; }
+html[data-theme="sunset"] .theme-fx, html[data-theme="winter"] .theme-fx { display: block; }
+html[data-theme-gate] .theme-fx { z-index: 305; }
+
+/* Sunset: a slow wash of low sun, plus a few embers drifting up */
+html[data-theme="sunset"] .theme-fx::before {
+    content: ""; position: absolute; inset: -20%;
+    background:
+        radial-gradient(55% 38% at 18% 0%, rgba(255,190,120,.16), transparent 70%),
+        radial-gradient(48% 38% at 92% 100%, rgba(240,130,90,.13), transparent 70%);
+    animation: sunsetWash 30s ease-in-out infinite alternate;
+}
+@keyframes sunsetWash { from { transform: translate3d(-3%, -2%, 0) scale(1); } to { transform: translate3d(4%, 3%, 0) scale(1.1); } }
+
+.theme-fx .mote {
+    position: absolute; left: var(--x); bottom: -4vh; width: var(--s); height: var(--s); border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,205,150,.95), rgba(255,170,110,0) 70%);
+    opacity: 0; animation: moteRise var(--d) linear var(--dl) infinite;
+}
+@keyframes moteRise {
+    0%   { opacity: 0; transform: translate3d(0, 0, 0); }
+    15%  { opacity: var(--o); }
+    85%  { opacity: var(--o); }
+    100% { opacity: 0; transform: translate3d(var(--sway), -108vh, 0); }
+}
+
+/* Winter: soft snow. Each flake has a faint blue rim so it still shows on white. */
+.theme-fx .flake {
+    position: absolute; left: var(--x); top: -12px; width: var(--s); height: var(--s); border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(120,170,230,.32), 0 0 7px rgba(160,200,245,.85);
+    opacity: 0; animation: flakeFall var(--d) linear var(--dl) infinite;
+}
+@keyframes flakeFall {
+    0%   { opacity: 0; transform: translate3d(0, -4vh, 0); }
+    10%  { opacity: var(--o); }
+    90%  { opacity: var(--o); }
+    100% { opacity: 0; transform: translate3d(var(--sway), 106vh, 0); }
+}
+
+/* =========================================================
+   5. PRE-LOGIN THEME PICKER
+   Shown only while <html data-theme-gate> is set (no saved choice yet).
+   It is painted with the live theme tokens, so choosing a card re-skins
+   the picker itself: a true preview.
+   ========================================================= */
+.theme-gate {
+    position: fixed; inset: 0; z-index: 300; display: none; overflow-y: auto; isolation: isolate;
+    color: var(--scene-fg);
+    --focus-ring: var(--scene-fg);
+    background:
+        radial-gradient(70% 40% at 50% 112%, rgba(var(--horizon-rgb), .38), transparent 70%),
+        radial-gradient(120% 85% at 50% -10%, var(--scene-top) 0%, var(--scene-mid) 52%, var(--scene-bottom) 100%);
+    transition: opacity .8s var(--ease), filter .8s var(--ease), transform .8s var(--ease);
+}
+html[data-theme-gate] .theme-gate { display: flex; }
+/* While the picker is up the login view waits, un-slid, behind it (its resting offset would widen the page) */
+html[data-theme-gate] .view-login { transform: none; }
+.theme-gate.is-leaving { opacity: 0; filter: blur(8px); transform: scale(1.03); pointer-events: none; }
+
+.gate-aurora, .gate-stars { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.gate-aurora {
+    inset: -25%;
+    background:
+        radial-gradient(34% 26% at 20% 28%, rgba(var(--glow-a-rgb), .5), transparent 70%),
+        radial-gradient(30% 24% at 78% 66%, rgba(var(--glow-c-rgb), .42), transparent 70%),
+        radial-gradient(26% 20% at 64% 18%, rgba(var(--glow-b-rgb), .26), transparent 70%);
+    filter: blur(36px);
+    animation: gateDrift 26s ease-in-out infinite alternate;
+}
+@keyframes gateDrift { from { transform: translate3d(-3%, -2%, 0) scale(1) rotate(0deg); } to { transform: translate3d(4%, 3%, 0) scale(1.12) rotate(5deg); } }
+.gate-stars {
+    opacity: var(--stars-opacity, 1);
+    background-image:
+        radial-gradient(1.5px 1.5px at 8% 14%, rgba(var(--star-rgb), .95) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 26% 33%, rgba(var(--star-rgb), .9) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 43% 9%, rgba(var(--star-rgb), .95) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 69% 22%, rgba(var(--star-rgb), .95) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 85% 12%, rgba(var(--star-rgb), .9) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 92% 70%, rgba(var(--star-rgb), .9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 17% 62%, rgba(var(--star-rgb), .85) 50%, transparent 52%),
+        radial-gradient(1px 1px at 58% 44%, rgba(var(--star-rgb), .8) 50%, transparent 52%),
+        radial-gradient(1px 1px at 77% 58%, rgba(var(--star-rgb), .85) 50%, transparent 52%),
+        radial-gradient(1px 1px at 4% 88%, rgba(var(--star-rgb), .85) 50%, transparent 52%);
+    animation: gateTwinkle 6s ease-in-out infinite;
+}
+@keyframes gateTwinkle { 0%, 100% { opacity: calc(var(--stars-opacity, 1) * .95); } 50% { opacity: calc(var(--stars-opacity, 1) * .4); } }
+html[data-theme="winter"] .gate-stars { opacity: 0; animation: none; }
+html[data-theme="sunset"] .gate-stars { --stars-opacity: .45; }
+
+.gate-inner {
+    width: min(100%, 980px); margin: auto; text-align: center;
+    padding: clamp(1.75rem, 6vw, 3.5rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 6vw, 3.5rem);
+    display: grid; justify-items: center; gap: 1rem;
+}
+.gate-inner > * { animation: gateRise .9s var(--ease) both; }
+.gate-inner > :nth-child(2) { animation-delay: .08s; }
+.gate-inner > :nth-child(3) { animation-delay: .16s; }
+.gate-inner > :nth-child(4) { animation-delay: .24s; }
+.gate-inner > :nth-child(5) { animation-delay: .62s; }
+@keyframes gateRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+.gate-script {
+    font-family: "Mrs Saint Delafield", cursive; font-weight: 400;
+    font-size: clamp(3.4rem, 12vw, 5.4rem); line-height: .8; color: var(--scene-fg);
+    transform: rotate(-3deg); margin: 0 0 .2rem;
+    text-shadow: 0 0 40px rgba(var(--scene-glow-rgb), .45);
+}
+.gate-inner h1 { font-size: clamp(1.55rem, 5vw, 2.2rem); font-weight: 600; color: var(--scene-strong); }
+.gate-desc { color: rgba(var(--scene-fg-rgb), .78); font-size: .95rem; max-width: 34ch; }
+
+.theme-options {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(.9rem, 2.4vw, 1.5rem);
+    width: 100%; margin: clamp(.9rem, 3vw, 1.6rem) 0 clamp(.6rem, 2vw, 1rem);
+}
+
+/* ----- Preview card ----- */
+.theme-card {
+    --tc-accent: #5483B3;
+    position: relative; display: grid; gap: .85rem; padding: .7rem .7rem 1rem; text-align: left; cursor: pointer;
+    color: var(--scene-fg); font: inherit;
+    background: rgba(var(--scene-fg-rgb), .06);
+    border: 1px solid rgba(var(--scene-fg-rgb), .22); border-radius: 22px;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .3s var(--ease), background-color .3s var(--ease);
+    animation: gateRise .9s var(--ease) both;
+}
+.theme-card:nth-child(1) { animation-delay: .3s; }
+.theme-card:nth-child(2) { animation-delay: .4s; }
+.theme-card:nth-child(3) { animation-delay: .5s; }
+.theme-card:hover { transform: translateY(-6px); background: rgba(var(--scene-fg-rgb), .1); border-color: rgba(var(--scene-fg-rgb), .45); }
+.theme-card:active { transform: translateY(-2px) scale(.985); }
+.theme-card[aria-checked="true"] {
+    border-color: var(--tc-accent);
+    background: rgba(var(--scene-fg-rgb), .1);
+    box-shadow: 0 0 0 2px var(--tc-accent), 0 26px 50px -22px var(--tc-accent);
+    transform: translateY(-4px);
+}
+.theme-card[aria-checked="true"]:hover { transform: translateY(-8px); }
+
+.theme-card[data-theme-option="sunset"] {
+    --tc-accent: #E0764A; --tc-ink: #FFE6CF; --tc-btn: #FFD2A8;
+    --tc-bg: linear-gradient(180deg, #3B1A33 0%, #8F3A4B 46%, #EE8A5C 76%, #FFC27A 100%);
+    --s1: #A63D1A; --s2: #F08A5D; --s3: #FFC27A; --s4: #FFE6CF;
+}
+.theme-card[data-theme-option="normal"] {
+    --tc-accent: #5483B3; --tc-ink: #FFFFFF; --tc-btn: #C1E8FF;
+    --tc-bg: radial-gradient(120% 90% at 50% -10%, #0C3070 0%, #04132E 55%, #021024 100%);
+    --s1: #021024; --s2: #052659; --s3: #5483B3; --s4: #C1E8FF;
+}
+.theme-card[data-theme-option="winter"] {
+    --tc-accent: #3C86D0; --tc-ink: #0B2A5E; --tc-btn: #2A5F93;
+    --tc-bg: linear-gradient(180deg, #FFFFFF 0%, #DCEBFA 55%, #B3D3EF 100%);
+    --s1: #2A5F93; --s2: #9DBBDD; --s3: #EAF4FF; --s4: #0B1F3A;
+}
+
+.tc-preview {
+    position: relative; display: block; aspect-ratio: 5 / 4; border-radius: 15px; overflow: hidden; isolation: isolate;
+    box-shadow: inset 0 0 0 1px rgba(128,128,128,.25);
+    transition: transform .5s var(--ease);
+}
+.theme-card:hover .tc-preview { transform: scale(1.025); }
+.tc-preview > * { position: absolute; display: block; }
+.tc-bg { inset: 0; background: var(--tc-bg); z-index: -2; }
+
+/* a tiny drawing of the login screen, so each card previews real UI */
+.tc-ui { left: 14%; right: 14%; top: 24%; display: grid !important; gap: 8px; justify-items: center; z-index: 2; }
+.tc-line { display: block; height: 6px; width: 74%; border-radius: 4px; background: var(--tc-ink); }
+.tc-line.short { width: 48%; opacity: .55; }
+.tc-pill { display: block; height: 17px; width: 58%; border-radius: 999px; background: var(--tc-btn); margin-top: 8px; box-shadow: 0 6px 14px -6px var(--tc-btn); }
+
+/* Sunset preview: the sun slowly lifts */
+.tc-sun {
+    left: 50%; bottom: -26%; width: 54%; aspect-ratio: 1; translate: -50% 0; border-radius: 50%; z-index: -1;
+    background: radial-gradient(circle at 50% 38%, #FFF0C8, #FFC27A 55%, #F58A52);
+    box-shadow: 0 0 36px 12px rgba(255,170,100,.55);
+    animation: tcSun 9s ease-in-out infinite alternate;
+}
+@keyframes tcSun { to { translate: -50% -16%; } }
+
+/* Normal preview: twinkling stars */
+.tc-star { width: 2px; height: 2px; border-radius: 50%; background: #fff; z-index: -1; animation: tcTwinkle 3.6s ease-in-out infinite; }
+.tc-star:nth-of-type(1) { left: 12%; top: 16%; }
+.tc-star:nth-of-type(2) { left: 80%; top: 12%; animation-delay: -1.2s; }
+.tc-star:nth-of-type(3) { left: 66%; top: 60%; animation-delay: -2.2s; }
+.tc-star:nth-of-type(4) { left: 24%; top: 74%; animation-delay: -.6s; }
+.tc-star:nth-of-type(5) { left: 90%; top: 80%; animation-delay: -1.8s; }
+@keyframes tcTwinkle { 0%, 100% { opacity: .95; } 50% { opacity: .25; } }
+
+/* Winter preview: snow */
+.tc-flake { top: -8px; width: 5px; height: 5px; border-radius: 50%; background: #fff; box-shadow: 0 0 5px 1px rgba(120,170,230,.7); z-index: 1; animation: tcSnow 6s linear infinite; opacity: 0; }
+.tc-flake:nth-of-type(1) { left: 14%; }
+.tc-flake:nth-of-type(2) { left: 36%; width: 4px; height: 4px; animation-delay: -2.4s; animation-duration: 7s; }
+.tc-flake:nth-of-type(3) { left: 58%; animation-delay: -4s; }
+.tc-flake:nth-of-type(4) { left: 78%; width: 4px; height: 4px; animation-delay: -1.2s; animation-duration: 5.4s; }
+.tc-flake:nth-of-type(5) { left: 90%; animation-delay: -3.2s; animation-duration: 6.6s; }
+@keyframes tcSnow { 0% { opacity: 0; transform: translate(0, 0); } 12% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, 150px); } }
+
+.tc-body { display: grid; gap: .3rem; padding: 0 .35rem; }
+.tc-name { font-weight: 700; font-size: 1.1rem; letter-spacing: -.01em; color: var(--scene-strong); }
+.tc-desc { font-size: .85rem; line-height: 1.45; color: rgba(var(--scene-fg-rgb), .8); }
+.tc-swatches { display: flex; gap: 6px; margin-top: .35rem; }
+.tc-swatches i { width: 16px; height: 16px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(128,128,128,.35); }
+.tc-swatches i:nth-child(1) { background: var(--s1); }
+.tc-swatches i:nth-child(2) { background: var(--s2); }
+.tc-swatches i:nth-child(3) { background: var(--s3); }
+.tc-swatches i:nth-child(4) { background: var(--s4); }
+
+/* selection badge */
+.tc-check {
+    position: absolute; top: 1.15rem; right: 1.15rem; z-index: 3; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--tc-accent); box-shadow: 0 6px 14px -4px var(--tc-accent), 0 0 0 3px rgba(255,255,255,.85);
+    transform: scale(0) rotate(-40deg); transition: transform .5s cubic-bezier(.34,1.4,.5,1);
+}
+.tc-check::after {
+    content: ""; position: absolute; left: 9px; top: 5px; width: 6px; height: 12px;
+    border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg);
+}
+.theme-card[aria-checked="true"] .tc-check { transform: none; }
+
+/* ----- Continue button ----- */
+.gate-continue {
+    position: relative; display: inline-flex; align-items: center; gap: .7rem; overflow: hidden; isolation: isolate;
+    min-height: 56px; padding: .85rem 2.2rem; border: 0; border-radius: 999px; cursor: pointer;
+    font: 600 1rem/1 "Sora", system-ui, sans-serif; letter-spacing: .01em;
+    background: var(--scene-btn-bg); color: var(--scene-btn-fg);
+    box-shadow: 0 14px 34px -14px rgba(var(--scene-glow-rgb), .8);
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease), background-color .3s var(--ease), color .3s var(--ease);
+}
+.gate-continue::before {      /* slow shimmer */
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.5) 50%, transparent 70%);
+    transform: translateX(-120%); animation: gateShine 4.2s ease-in-out 1.6s infinite;
+}
+@keyframes gateShine { 0% { transform: translateX(-120%); } 38%, 100% { transform: translateX(120%); } }
+.gate-continue i {
+    position: relative; width: 18px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .3s var(--ease);
+}
+.gate-continue i::after {
+    content: ""; position: absolute; right: 0; top: -4px; width: 8px; height: 8px;
+    border: solid currentColor; border-width: 2px 2px 0 0; transform: rotate(45deg); transform-origin: center;
+}
+.gate-continue:hover { background: var(--scene-btn-hover); transform: translateY(-3px); box-shadow: 0 20px 40px -14px rgba(var(--scene-glow-rgb), .9); }
+.gate-continue:hover i { transform: translateX(5px); }
+.gate-continue:active { transform: translateY(0) scale(.98); }
+.gate-hint { font-size: .8rem; color: rgba(var(--scene-fg-rgb), .7); margin-top: -.2rem; }
+
+@media (max-width: 719px) {
+    .theme-options { grid-template-columns: 1fr; max-width: 430px; }
+    .theme-card { grid-template-columns: 1fr; }
+    .tc-preview { aspect-ratio: 16 / 7; }
+    .tc-ui { top: 18%; gap: 6px; }
+}
+
+/* =========================================================
+   6. IN-SITE SWITCHER (bottom-left, after the picker is dismissed)
+   ========================================================= */
+.theme-switcher {
+    position: fixed; left: max(14px, env(safe-area-inset-left)); bottom: max(14px, env(safe-area-inset-bottom)); z-index: 40;
+}
+html[data-theme-gate] .theme-switcher { display: none; }
+.theme-switcher-btn {
+    width: 48px; height: 48px; padding: 0; display: grid; place-items: center; cursor: pointer;
+    border-radius: 15px; border: 1px solid var(--border); background: var(--surface); color: var(--navy);
+    box-shadow: 0 10px 24px -12px rgba(var(--ink-rgb), .4);
+    transition: transform .3s var(--ease), box-shadow .25s var(--ease), background-color .25s var(--ease);
+    -webkit-tap-highlight-color: transparent;
+}
+.theme-switcher-btn:hover { transform: translateY(-2px); background: var(--ice); box-shadow: 0 14px 28px -12px rgba(var(--ink-rgb), .5); }
+.theme-switcher-btn:active { transform: scale(.94); }
+.theme-switcher-btn:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+.ts-icon {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: conic-gradient(from 200deg, #F08A5D 0 33%, #5483B3 0 66%, #B3D3EF 0 100%);
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px currentColor;
+    transition: transform .6s var(--ease);
+}
+.theme-switcher-btn:hover .ts-icon, .theme-switcher-btn[aria-expanded="true"] .ts-icon { transform: rotate(120deg); }
+
+.theme-pop {
+    position: absolute; left: 0; bottom: 60px; width: min(268px, calc(100vw - 28px)); padding: .55rem;
+    border-radius: 20px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow), 0 24px 48px -24px rgba(var(--ink-rgb), .5);
+    opacity: 0; transform: translateY(10px) scale(.96); transform-origin: bottom left; pointer-events: none;
+    transition: opacity .3s var(--ease), transform .4s var(--ease);
+}
+.theme-pop[hidden] { display: none; }
+.theme-pop.is-open { opacity: 1; transform: none; pointer-events: auto; }
+.theme-pop-title { margin: .45rem .75rem .35rem; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+.theme-opt {
+    display: flex; align-items: center; gap: .75rem; width: 100%; padding: .7rem .75rem; text-align: left; cursor: pointer;
+    border: 1px solid transparent; border-radius: 14px; background: transparent; color: var(--text); font: inherit; font-weight: 600;
+    transition: background-color .25s var(--ease), border-color .25s var(--ease), transform .3s var(--ease);
+}
+.theme-opt:hover { background: var(--surface-soft); transform: translateX(3px); }
+.theme-opt:focus-visible { outline: 3px solid var(--navy); outline-offset: 1px; }
+.theme-opt[aria-checked="true"] { background: var(--ice); border-color: var(--sky); }
+.theme-opt .to-dot { flex: none; width: 24px; height: 24px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(var(--ink-rgb), .25); }
+.theme-opt[data-theme-option="sunset"] .to-dot { background: linear-gradient(145deg, #FFC27A, #E0764A 60%, #8F3A4B); }
+.theme-opt[data-theme-option="normal"] .to-dot { background: linear-gradient(145deg, #C1E8FF, #5483B3 55%, #04132E); }
+.theme-opt[data-theme-option="winter"] .to-dot { background: linear-gradient(145deg, #FFFFFF, #B3D3EF 55%, #3C86D0); }
+.theme-opt .to-text { flex: 1; display: grid; line-height: 1.25; }
+.theme-opt .to-sub { font-size: .76rem; font-weight: 400; color: var(--text-muted); }
+.theme-opt .to-tick { width: 18px; height: 18px; border-radius: 50%; background: var(--navy); opacity: 0; transform: scale(.4); transition: opacity .25s var(--ease), transform .35s cubic-bezier(.34,1.4,.5,1); position: relative; }
+.theme-opt .to-tick::after { content: ""; position: absolute; left: 6px; top: 3px; width: 4px; height: 8px; border: solid var(--surface); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.theme-opt[aria-checked="true"] .to-tick { opacity: 1; transform: none; }
+
+/* =========================================================
+   7. REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .theme-fx .flake, .theme-fx .mote, html[data-theme="sunset"] .theme-fx::before { display: none; animation: none; }
+    .gate-aurora, .gate-stars, .gate-inner > *, .theme-card, .gate-continue::before,
+    .tc-sun, .tc-star, .tc-flake { animation: none !important; }
+    .tc-flake { opacity: 0; }
+    .theme-gate, .theme-card, .tc-preview, .tc-check, .gate-continue, .gate-continue i,
+    .theme-pop, .theme-opt, .theme-switcher-btn, .ts-icon { transition-duration: .01ms !important; }
+    .theme-card:hover, .theme-card[aria-checked="true"], .theme-card[aria-checked="true"]:hover { transform: none; }
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

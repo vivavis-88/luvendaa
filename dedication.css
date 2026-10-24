@@ -1,0 +1,319 @@
+/* =========================================================
+   Dedication page — ADDITIVE styles (load after style.css)
+   Reuses the existing tokens, .view/.stage/.btn/.card/.overlay/.modal.
+   Page styles are scoped under .view-dedication so no other page is touched.
+   ========================================================= */
+
+/* Marker so the script can detect that this stylesheet is loaded */
+:root { --ded-css: 1; }
+
+/* ---------- Entry points on existing pages ---------- */
+.ded-next-block { margin-top: 2.5rem; }
+.ded-next-block p { margin: 0; }
+
+/* ---------- Spacing scale (Dedication only) ---------- */
+.view-dedication {
+    --ded-s1: .5rem;
+    --ded-s2: .75rem;
+    --ded-s3: 1rem;
+    --ded-s4: 1.5rem;
+    --ded-s5: 2rem;
+    --ded-s6: 3rem;
+    --ded-max: 1100px;
+}
+
+/* ---------- Page container ---------- */
+.view-dedication .ded-page {
+    width: 100%;
+    max-width: var(--ded-max);
+    margin: var(--ded-s5) auto 0;
+    padding: 0 clamp(1rem, 4vw, 2rem) var(--ded-s6);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ded-s5);
+}
+.view-dedication .ded-page > * { min-width: 0; margin: 0; }
+.view-dedication .ded-page h2,
+.view-dedication .ded-page h3,
+.view-dedication .ded-page p { margin: 0; }
+.view-dedication [hidden] { display: none !important; }
+
+/* Buttons: one height / padding / transition for every action on this page */
+.view-dedication .ded-page .btn {
+    min-height: 46px;
+    padding: .6rem 1.4rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease), background-color .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease);
+}
+.view-dedication .ded-page .btn-primary:hover { box-shadow: 0 10px 22px -10px rgba(2,16,36,.45); }
+.view-dedication .ded-page .btn-ghost:hover { background: var(--surface-soft, #EAF4FD); }
+.view-dedication .ded-page .btn:focus-visible { outline: 3px solid rgba(84,131,179,.5); outline-offset: 2px; }
+.view-dedication .ded-page .ded-btn-lg { min-height: 52px; padding: .7rem 2rem; }
+
+/* ---------- Toolbar ---------- */
+.view-dedication .ded-toolbar { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--ded-s2); }
+
+/* ---------- Collection ---------- */
+.view-dedication .ded-collection { display: grid; gap: var(--ded-s4); }
+.view-dedication .ded-section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--ded-s1); }
+.view-dedication .ded-section-title { font-size: clamp(1.15rem, 2.4vw, 1.4rem); font-weight: 700; color: var(--navy); line-height: 1.25; letter-spacing: -.01em; }
+.view-dedication .ded-section-note { font-size: .88rem; color: var(--text-muted); }
+
+.view-dedication .ded-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+    gap: var(--ded-s5) var(--ded-s4);
+}
+.view-dedication .ded-grid > li { display: flex; min-width: 0; }
+
+.ded-card {
+    --bg: #DDEEFC; --flap: #B9DAF5; --bd: #9CC3E6; --fg: var(--ink);
+    position: relative; width: 100%; min-height: 260px; display: grid; align-content: end; text-align: left;
+    padding: 6rem 1.4rem 1.3rem; cursor: pointer; color: var(--fg);
+    background: var(--bg); border: 1px solid var(--bd); border-radius: var(--radius);
+    box-shadow: 0 12px 30px -10px rgba(2,16,36,.15); overflow: hidden; box-sizing: border-box;
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.ded-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -12px rgba(2,16,36,.25); }
+.ded-card:active { transform: translateY(0) scale(.985); }
+.ded-card:focus-visible { outline: 3px solid rgba(84,131,179,.55); outline-offset: 3px; }
+
+.ded-flap {
+    position: absolute; top: 0; left: 0; right: 0; height: 46%; background: var(--flap);
+    clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center;
+    transition: transform .4s var(--ease);
+}
+.ded-seal, .ded-stamp, .ded-fold { display: none; position: absolute; z-index: 3; }
+.ded-card:hover .ded-flap { transform: scaleY(.8); }
+
+.ded-card-body { position: relative; z-index: 2; display: grid; gap: .35rem; }
+.ded-kicker { font-size: .78rem; font-weight: 600; opacity: .75; letter-spacing: .02em; }
+.ded-card-title { font-weight: 700; font-size: 1.1rem; line-height: 1.3; }
+.ded-card-date { font-size: .8rem; opacity: .75; }
+.ded-card-excerpt { font-size: .85rem; line-height: 1.5; opacity: .85; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ded-card-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: .45rem; }
+.ded-card-count { font-size: .78rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Status pills */
+.ded-pill { display: inline-block; padding: .18rem .65rem; border-radius: 999px; font-size: .74rem; font-weight: 600; border: 1px solid transparent; white-space: nowrap; }
+.ded-pill-draft { background: #E9ECEF; color: #343A40; border-color: #ADB5BD; }
+.ded-pill-scheduled { background: #FFF3B0; color: #594202; border-color: #FCC419; }
+.ded-pill-available { background: var(--ice); color: var(--navy); border-color: var(--sky); }
+.ded-pill-early { background: #FFD1D1; color: #5C0614; border-color: #FF8585; }
+.ded-pill-new { background: var(--surface-soft); color: var(--navy); border-color: var(--border); }
+
+/* Variant 1 — Cream letter with a stamp */
+.ded-v1 { --bg: #FBF7EE; --flap: #F1E8D2; --bd: #E0D3B5; --fg: #4A453B; }
+.ded-v1::after { content: ""; position: absolute; inset: 8px; border: 1px dashed rgba(160,140,100,.38); border-radius: calc(var(--radius) - 6px); pointer-events: none; }
+.ded-v1 .ded-stamp { display: grid; place-items: center; top: 14px; right: 16px; width: 38px; height: 46px; background: #fff; border: 2px dotted var(--bd); color: #C77D8E; font-size: 1rem; transform: rotate(4deg); transition: transform .35s var(--ease), opacity .35s var(--ease); }
+.ded-v1 .ded-stamp::before { content: "\2665"; }
+.ded-v1:hover .ded-stamp { transform: rotate(-4deg) scale(1.06); }
+
+/* Variant 2 — Layered paper */
+.ded-v2 { --bg: #F6FBFF; --flap: #D3EAFB; --bd: #7DA0CA; box-shadow: 0 8px 0 -3px #D9ECFB, 0 16px 0 -6px #C1E0F7, 0 26px 30px -12px rgba(2,16,36,.22); }
+.ded-v2 .ded-flap { height: 34%; }
+.ded-v2:hover { box-shadow: 0 12px 0 -3px #D9ECFB, 0 24px 0 -6px #C1E0F7, 0 34px 34px -12px rgba(2,16,36,.26); }
+
+/* Variant 3 — Sealed with a heart */
+.ded-v3 { --bg: #EAF3FB; --flap: #CFE3F5; --bd: #A8C8E6; }
+.ded-v3 .ded-seal { display: grid; place-items: center; left: 50%; top: calc(46% - 20px); width: 40px; height: 40px; margin-left: -20px; border-radius: 50%; background: #C77D8E; color: #fff; box-shadow: 0 3px 8px rgba(120,50,70,.35); transition: transform .35s var(--ease), opacity .35s var(--ease); }
+.ded-v3 .ded-seal::before { content: "\2665"; font-size: 1rem; }
+.ded-v3:hover .ded-seal { transform: scale(1.12) rotate(-8deg); }
+
+/* Variant 4 — Journal page with a folded corner */
+.ded-v4 {
+    --bg: #F4F9FF; --bd: #7DA0CA; padding-top: 3.5rem; min-height: 230px; border-left: 7px solid var(--steel);
+    background-image: repeating-linear-gradient(180deg, transparent 0 27px, rgba(84,131,179,.14) 27px 28px); background-position: 0 56px;
+}
+.ded-v4 .ded-flap { display: none; }
+.ded-v4 .ded-fold { display: block; top: 0; right: 0; width: 44px; height: 44px; background: linear-gradient(225deg, var(--bg) 50%, #B5D3EE 50%); box-shadow: -3px 3px 6px rgba(2,16,36,.12); border-bottom-left-radius: 10px; transition: width .35s var(--ease), height .35s var(--ease); }
+.ded-v4:hover .ded-fold { width: 58px; height: 58px; }
+
+/* Pre-open effects (one per style); the reader afterwards is shared */
+.ded-card.is-opening { transform: translateY(-8px) scale(1.015); }
+.ded-card.is-opening .ded-flap { transform: rotateX(180deg); }
+.ded-v1.is-opening .ded-stamp { transform: rotate(18deg) scale(.9); opacity: 0; }
+.ded-v2.is-opening { box-shadow: 0 18px 0 -3px #D9ECFB, 0 34px 0 -6px #C1E0F7, 0 42px 40px -12px rgba(2,16,36,.3); }
+.ded-v3.is-opening .ded-seal { transform: scale(1.4); opacity: 0; }
+.ded-v4.is-opening .ded-fold { width: 92px; height: 92px; }
+.ded-card.is-nudge { animation: nudge .42s var(--ease); }
+
+/* ---------- Empty state ---------- */
+.view-dedication .ded-empty {
+    display: grid; justify-items: center; text-align: center; gap: var(--ded-s2);
+    padding: var(--ded-s6) var(--ded-s4);
+    background: rgba(255,255,255,.55); border: 1px dashed var(--border); border-radius: var(--radius);
+}
+.view-dedication .ded-empty h2 { font-size: clamp(1.3rem, 3vw, 1.7rem); font-weight: 700; color: var(--navy); line-height: 1.25; }
+.view-dedication .ded-empty p { max-width: 34ch; line-height: 1.55; color: var(--text-muted); }
+.view-dedication .ded-empty .btn { margin-top: var(--ded-s2); }
+
+.ded-empty-env { position: relative; isolation: isolate; width: 168px; height: 108px; margin: var(--ded-s3) 0 var(--ded-s2); }
+.ded-empty-env::before { content: ""; position: absolute; inset: 0; z-index: 1; background: var(--sky); border-radius: 10px; box-shadow: var(--shadow); }
+.ded-empty-paper { position: absolute; z-index: 0; left: 16px; right: 16px; top: -16px; height: 76px; background: #FFFDF8; border: 1px solid #E3D9C3; border-radius: 6px; transform: rotate(-2deg); }
+.ded-empty-paper::before, .ded-empty-paper::after { content: ""; position: absolute; left: 14px; right: 14px; height: 2px; background: rgba(84,131,179,.25); border-radius: 2px; }
+.ded-empty-paper::before { top: 14px; }
+.ded-empty-paper::after { top: 26px; right: 40px; }
+.ded-empty-flap { position: absolute; z-index: 2; inset: 0; background: var(--steel); clip-path: polygon(0 0, 100% 0, 50% 62%); border-radius: 10px 10px 0 0; }
+.ded-empty-heart { position: absolute; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 1.1rem; line-height: 1; }
+.ded-empty-heart::before { content: "\2665"; }
+
+/* ---------- Countdown section ---------- */
+.view-dedication .ded-next {
+    display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--ded-s4) var(--ded-s5);
+    padding: var(--ded-s4) var(--ded-s5);
+    background: linear-gradient(160deg, var(--surface), var(--ice));
+    border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.view-dedication .ded-next-art { position: relative; isolation: isolate; width: 88px; height: 60px; flex: none; }
+.view-dedication .ded-next-art::before { content: ""; position: absolute; inset: 0; z-index: 1; background: var(--sky); border-radius: 8px; box-shadow: 0 8px 16px -8px rgba(2,16,36,.3); }
+.view-dedication .ded-next-art::after { content: "\2665"; position: absolute; z-index: 3; left: 50%; top: 46%; transform: translate(-50%, -50%); color: #fff; font-size: .85rem; line-height: 1; }
+.view-dedication .ded-next-art i { position: absolute; z-index: 2; inset: 0; background: var(--steel); clip-path: polygon(0 0, 100% 0, 50% 62%); border-radius: 8px 8px 0 0; }
+.view-dedication .ded-next-art b { position: absolute; z-index: 0; left: 10px; right: 10px; top: -10px; height: 42px; background: #FFFDF8; border: 1px solid #E3D9C3; border-radius: 4px; }
+
+.view-dedication .ded-next-main { display: grid; gap: var(--ded-s3); min-width: 0; }
+.view-dedication .ded-next-text { display: grid; gap: .3rem; }
+.view-dedication .ded-next-title { font-size: clamp(1.1rem, 2.4vw, 1.35rem); font-weight: 700; color: var(--navy); line-height: 1.25; }
+.view-dedication .ded-next-letter { font-size: 1rem; font-weight: 600; color: var(--steel); overflow-wrap: anywhere; }
+.view-dedication .ded-next-when { font-size: .88rem; color: var(--text-muted); line-height: 1.5; }
+
+.view-dedication .ded-clock { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ded-s2); max-width: 420px; }
+.view-dedication .ded-unit { display: grid; justify-items: center; gap: .15rem; padding: .7rem .4rem; background: rgba(255,255,255,.75); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.view-dedication .ded-num { font-size: clamp(1.25rem, 4vw, 1.75rem); font-weight: 700; color: var(--navy); line-height: 1.1; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.view-dedication .ded-unit-label { font-size: .72rem; font-weight: 500; color: var(--text-muted); }
+
+.view-dedication .ded-next.is-none { padding: var(--ded-s3) var(--ded-s4); gap: var(--ded-s3) var(--ded-s4); box-shadow: none; background: rgba(255,255,255,.55); }
+.view-dedication .ded-next.is-none .ded-next-art { width: 64px; height: 44px; }
+.view-dedication .ded-next.is-none .ded-next-title { font-size: 1rem; }
+
+/* ---------- Writer's desk ---------- */
+.view-dedication .ded-manage {
+    padding: 0; overflow: hidden; border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(250,253,255,.96), rgba(238,247,254,.96));
+    border: 1px solid var(--border); box-shadow: 0 14px 34px -18px rgba(2,16,36,.28);
+}
+.view-dedication .ded-manage > summary {
+    display: flex; align-items: center; gap: var(--ded-s2);
+    padding: 1.05rem var(--ded-s4); cursor: pointer; list-style: none; user-select: none;
+    font-weight: 600; color: var(--navy); transition: background-color .25s var(--ease);
+}
+.view-dedication .ded-manage > summary::-webkit-details-marker { display: none; }
+.view-dedication .ded-manage > summary::marker { content: ""; }
+.view-dedication .ded-manage > summary:hover { background: rgba(185,218,245,.28); }
+.view-dedication .ded-manage > summary:focus-visible { outline: 3px solid rgba(84,131,179,.5); outline-offset: -3px; border-radius: var(--radius); }
+.view-dedication .ded-summary-main { display: flex; align-items: baseline; gap: var(--ded-s1); flex: 1 1 auto; min-width: 0; }
+.view-dedication .ded-summary-label { font-size: 1.05rem; font-weight: 700; }
+.view-dedication .ded-lock-note { flex: none; font-size: .78rem; font-weight: 600; padding: .18rem .65rem; border-radius: 999px; background: #fff; border: 1px solid var(--border); color: var(--steel); }
+.view-dedication .ded-lock-note.is-open { background: var(--ice); color: var(--navy); border-color: var(--sky); }
+.view-dedication .ded-chevron { flex: none; width: 10px; height: 10px; margin: 0 .35rem 4px 0; border: solid var(--steel); border-width: 0 2px 2px 0; transform: rotate(45deg); transition: transform .3s var(--ease), margin .3s var(--ease); }
+.view-dedication .ded-manage.is-open .ded-chevron { transform: rotate(225deg); margin-bottom: -4px; }
+
+.view-dedication .ded-manage-body { overflow: hidden; }
+.view-dedication .ded-manage-inner { display: grid; gap: var(--ded-s4); padding: var(--ded-s4); border-top: 1px solid var(--border); }
+.view-dedication .ded-groups { display: grid; gap: var(--ded-s4); }
+.view-dedication .ded-group { display: grid; gap: var(--ded-s2); }
+.view-dedication .ded-group + .ded-group { padding-top: var(--ded-s4); border-top: 1px solid var(--border); }
+.view-dedication .ded-group h3 { font-size: .95rem; font-weight: 700; color: var(--steel); line-height: 1.3; }
+.view-dedication .ded-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.view-dedication .ded-item { display: grid; gap: var(--ded-s2); padding: .9rem 1rem; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 0; }
+.view-dedication .ded-item-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--ded-s1); }
+.view-dedication .ded-item-title { font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+.view-dedication .ded-item-meta { font-size: .8rem; line-height: 1.5; color: var(--text-muted); }
+.view-dedication .ded-item-actions { display: flex; flex-wrap: wrap; gap: var(--ded-s1); }
+.view-dedication .ded-page .ded-item-actions .btn { min-height: 38px; padding: .35rem .9rem; font-size: .82rem; }
+.view-dedication .ded-btn-danger { color: var(--error); border-color: rgba(122,31,58,.4); }
+.view-dedication .ded-btn-danger:hover { background: #FFE9EE; border-color: var(--error); }
+.view-dedication .ded-none { font-size: .88rem; line-height: 1.5; color: var(--text-muted); padding: .35rem 0; }
+
+.view-dedication .ded-backup { display: grid; gap: var(--ded-s3); padding-top: var(--ded-s4); border-top: 1px solid var(--border); }
+.view-dedication .ded-backup p { font-size: .85rem; line-height: 1.55; color: var(--text-muted); max-width: 62ch; }
+.view-dedication .ded-actions-row { display: flex; flex-wrap: wrap; gap: var(--ded-s2); }
+.view-dedication .ded-page .ded-actions-row .btn { flex: 0 0 auto; }
+
+/* ---------- Editor ---------- */
+.ded-editor-overlay { align-items: start; justify-items: center; }
+.ded-editor { max-width: 640px; margin-block: auto; gap: 1rem; }
+.ded-editor-head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+.ded-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+.ded-row > .ded-field { flex: 1 1 200px; }
+.ded-row > .ded-narrow { flex: 0 1 150px; }
+.ded-field { display: grid; gap: .35rem; align-content: start; font-size: .85rem; font-weight: 600; color: var(--navy); }
+.ded-field input, .ded-field select, .ded-field textarea {
+    width: 100%; box-sizing: border-box; background: #fff; color: var(--text); font: inherit; font-weight: 500;
+    border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .8rem 1rem;
+    transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+.ded-field textarea { min-height: 12rem; resize: vertical; line-height: 1.7; }
+.ded-field input:focus, .ded-field select:focus, .ded-field textarea:focus { outline: none; border-color: var(--steel); box-shadow: 0 0 0 4px rgba(84,131,179,.2); }
+.ded-help { font-size: .8rem; font-weight: 400; color: var(--text-muted); }
+.ded-inline-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.ded-inline-actions .btn { min-height: 38px; padding: .3rem .9rem; font-size: .82rem; }
+.ded-photo-preview { border: 1px solid var(--border); border-radius: var(--radius-sm); background: #fff; padding: .5rem; max-width: 260px; }
+.ded-photo-preview[hidden] { display: none; }
+.ded-photo-preview img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.ded-error { min-height: 1.3rem; font-size: .88rem; font-weight: 500; color: var(--error); }
+.ded-actions { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: flex-end; }
+.ded-actions .btn { flex: 1 1 120px; }
+
+/* ---------- Password prompt ---------- */
+.ded-pass-form { display: grid; gap: .9rem; }
+.ded-pass-form h2, .ded-pass-form p { margin: 0; }
+.ded-pass-form.is-shaking { animation: nudge .42s var(--ease); }
+
+/* ---------- Reader (shared by every letter) ---------- */
+.ded-paper { background: #FFFDF8; border-color: #E3D9C3; color: var(--ink); }
+.ded-paper .letter-content { gap: 1.1rem; }
+.ded-read-head { text-align: center; display: grid; gap: .35rem; }
+.ded-read-meta { font-size: .85rem; color: var(--text-muted); }
+.ded-flag { justify-self: center; }
+.ded-flag[hidden], .letter-figure[hidden] { display: none; }
+.ded-body { display: grid; gap: 1rem; max-width: 60ch; margin: 0 auto; width: 100%; }
+.ded-para { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+.ded-sign { font-family: "Mrs Saint Delafield", cursive; font-size: 2.6rem; line-height: 1; text-align: right; color: var(--navy); margin: .25rem 0 0; }
+#dedOverlay .btn-ghost { border-color: currentColor; }
+
+/* ---------- Confirm + password overlays + toast ---------- */
+.ded-confirm-overlay { z-index: 70; }
+.ded-toast {
+    position: fixed; left: 50%; bottom: 1.5rem; z-index: 120; max-width: min(92vw, 440px); padding: .8rem 1.25rem;
+    background: var(--ink); color: var(--ice); font-size: .9rem; font-weight: 500; border-radius: var(--radius-sm);
+    box-shadow: var(--shadow); opacity: 0; pointer-events: none; transform: translate(-50%, 12px);
+    transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.ded-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .view-dedication .ded-next { padding: var(--ded-s4); gap: var(--ded-s4); }
+}
+@media (max-width: 640px) {
+    .view-dedication .ded-page { gap: var(--ded-s4); margin-top: var(--ded-s4); }
+    .view-dedication .ded-next { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .view-dedication .ded-next-main { justify-items: center; width: 100%; }
+    .view-dedication .ded-clock { width: 100%; }
+    .view-dedication .ded-next.is-none { grid-template-columns: auto 1fr; text-align: left; justify-items: start; }
+    .view-dedication .ded-empty { padding: var(--ded-s5) var(--ded-s3); }
+    .view-dedication .ded-manage-inner { padding: var(--ded-s3); }
+    .view-dedication .ded-lock-note { display: none; }
+    .view-dedication .ded-page .ded-actions-row .btn { flex: 1 1 140px; }
+    .ded-card { min-height: 240px; }
+}
+html[data-device="mobile"] .view-dedication .ded-grid { grid-template-columns: 1fr; }
+
+@media (prefers-reduced-motion: reduce) {
+    .ded-card, .ded-flap, .ded-seal, .ded-stamp, .ded-fold, .ded-toast, .ded-chevron,
+    .view-dedication .ded-page .btn { transition: none !important; animation: none !important; }
+}
+
+.ded-pass-form { text-align: center; }
+.ded-pass-input {
+    width: 100%; box-sizing: border-box; background: #fff; color: var(--text); font: inherit; font-weight: 500;
+    text-align: center; letter-spacing: .08em;
+    border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .8rem 1rem;
+    transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+.ded-pass-input:focus { outline: none; border-color: var(--steel); box-shadow: 0 0 0 4px rgba(84,131,179,.2); }
+.ded-editor [hidden] { display: none !important; }

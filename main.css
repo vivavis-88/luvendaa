@@ -1,0 +1,144 @@
+/* =========================================================
+   MAIN + OPEN WHEN: "the vault by dawn" (load AFTER intro.css)
+   Pure restyle: no markup, IDs or behavior are changed, so the
+   envelope, letter, zoom, password cards and navigation all
+   keep working exactly as before.
+   ========================================================= */
+
+/* ---------- Shared night sky (fixed, so it stays put while she scrolls) ---------- */
+.view-main, .view-openwhen {
+    position: relative;
+    isolation: isolate;
+    color: var(--scene-fg);
+    background:
+        radial-gradient(80% 42% at 50% 118%, rgba(var(--horizon-rgb),.5), transparent 72%),
+        radial-gradient(120% 85% at 50% -10%, var(--scene-top) 0%, var(--scene-mid) 52%, var(--scene-bottom) 100%) fixed;
+}
+.view-main::before, .view-openwhen::before {
+    content: "";
+    position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+    background:
+        radial-gradient(34% 26% at 22% 24%, rgba(var(--glow-a-rgb),.40), transparent 70%),
+        radial-gradient(30% 24% at 82% 62%, rgba(var(--glow-c-rgb),.36), transparent 70%),
+        radial-gradient(24% 20% at 60% 12%, rgba(var(--glow-b-rgb),.22), transparent 70%);
+    filter: blur(36px);
+    animation: loginDrift 32s ease-in-out infinite alternate;
+}
+.view-main .login-sky, .view-openwhen .login-sky { position: fixed; }
+
+/* ---------- Heading: script whisper + plain headline ---------- */
+.view-main .page-head, .view-openwhen .page-head { max-width: 40rem; margin: 1.5rem auto 2rem; gap: .6rem; }
+.view-main .page-head .label {
+    font-family: "Mrs Saint Delafield", cursive;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 8vw, 3.8rem);
+    line-height: .85;
+    color: var(--scene-fg);
+    margin: 0;
+    transform: rotate(-2deg);
+    text-shadow: 0 0 40px rgba(var(--scene-glow-rgb),.45);
+}
+.view-main h1, .view-openwhen h1 { color: var(--scene-strong); font-weight: 600; }
+.view-main .muted, .view-openwhen .muted, .view-main .clocks { color: rgba(var(--scene-fg-rgb),.72); }
+
+/* ---------- Envelope: sealed with a wax "A" ---------- */
+.view-main .env-back, #privateOverlay .env-back  { background: linear-gradient(160deg, var(--env-back-a), var(--env-back-b)); }
+.view-main .env-front, #privateOverlay .env-front { background: linear-gradient(170deg, var(--env-front-a), var(--env-front-b)); }
+.view-main .env-flap, #privateOverlay .env-flap  { background: linear-gradient(180deg, var(--env-flap-a), var(--env-flap-b)); filter: none; }
+.view-main .is-flap-open .env-flap, #privateOverlay .is-flap-open .env-flap { filter: brightness(.88); }
+.view-main .env-sheet, #privateOverlay .env-sheet { background:
+        repeating-linear-gradient(180deg, transparent 0 14px, rgba(var(--steel-rgb),.2) 14px 15px) 12% 34% / 76% 55% no-repeat,
+        var(--env-sheet); }
+.view-main .env-to, #privateOverlay .env-to { font-family: "Mrs Saint Delafield", cursive; font-weight: 400; font-size: clamp(1.7rem, 5vw, 2.4rem); color: var(--env-to); bottom: 9%; }
+.view-main .postmark, #privateOverlay .postmark { opacity: .7; }
+.view-main .envelope, #privateOverlay .envelope { filter: drop-shadow(0 28px 36px rgba(var(--scene-shadow-rgb),.5)) drop-shadow(0 0 50px rgba(var(--horizon-rgb),.22)); }
+
+.envelope::after {
+    content: "A";
+    position: absolute; left: 50%; top: 54%; z-index: 6;
+    width: 15%; aspect-ratio: 1; translate: -50% -50%;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    font-family: "Mrs Saint Delafield", cursive;
+    font-size: clamp(1.8rem, 6.4vw, 3.2rem); line-height: 1; padding-top: .12em;
+    color: rgba(255,225,230,.95);
+    background: radial-gradient(circle at 34% 28%, #E0587D 0%, #B22C54 46%, #7E1636 100%);
+    box-shadow: 0 6px 14px rgba(60,5,25,.45), inset 0 -3px 5px rgba(60,5,25,.35), inset 0 2px 3px rgba(255,170,190,.45);
+    transition: opacity .5s var(--ease), scale .6s var(--ease);
+    pointer-events: none;
+}
+.is-flap-open .envelope::after { opacity: 0; scale: .6; }
+
+/* Closed envelope breathes gently so it asks to be touched */
+#greetingWrap:not(.is-open):not(.is-flap-open) .envelope { animation: envBob 5s ease-in-out infinite; }
+@keyframes envBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+
+/* ---------- Letter paper ---------- */
+.view-main .letter-paper {
+    background: var(--letter-paper);
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 30px 70px -20px rgba(var(--scene-shadow-rgb),.6), 0 0 0 1px rgba(var(--scene-glow-rgb),.5), 0 0 60px -10px rgba(var(--horizon-rgb),.35);
+    color: var(--ink);
+}
+.view-main .letter-figure { border: 0; border-radius: 12px; box-shadow: 0 2px 14px rgba(var(--navy-rgb),.14); }
+
+/* ---------- Next blocks (also styles the "Something's new" block if it reuses .next-block) ---------- */
+.view-main .next-block { border-top: 1px solid rgba(var(--scene-fg-rgb),.14); margin-top: 4rem; padding-top: 3rem; gap: 1rem; }
+.view-main .next-block h2 { color: var(--scene-strong); font-weight: 600; max-width: 22ch; }
+.view-main .next-block .muted, .view-main .next-block p { color: rgba(var(--scene-fg-rgb),.7); }
+.view-main .btn-primary, .view-openwhen .btn-primary { background: var(--scene-btn-bg); color: var(--scene-btn-fg); border-radius: 999px; }
+.view-main .btn-primary:hover, .view-openwhen .btn-primary:hover { background: var(--scene-btn-hover); box-shadow: 0 0 34px -4px rgba(var(--scene-glow-rgb),.5); }
+
+/* ---------- Top navigation on dark ---------- */
+.view-main .topnav .btn-ghost, .view-openwhen .topnav .btn-ghost { color: var(--scene-fg); border-color: rgba(var(--scene-fg-rgb),.28); border-radius: 999px; background: rgba(var(--scene-fg-rgb),.05); }
+.view-main .topnav .btn-ghost:hover, .view-openwhen .topnav .btn-ghost:hover { background: rgba(var(--scene-fg-rgb),.14); border-color: var(--scene-fg); }
+/* Light pages (Dedication, Songs): readable pill buttons */
+.view-dedication .topnav .btn-ghost, .view-songs .topnav .btn-ghost { color: var(--navy); border-color: var(--border); border-radius: 999px; background: var(--surface, #fff); }
+.view-dedication .topnav .btn-ghost:hover, .view-songs .topnav .btn-ghost:hover { background: var(--surface-soft, #EAF4FD); border-color: var(--steel); }
+
+/* ---------- Open When: letters scattered on a desk ---------- */
+.view-openwhen h1 { font-size: clamp(2.2rem, 6vw, 3.2rem); }
+.ow-grid { gap: 2rem 1.75rem; margin-top: 2.5rem; padding: .5rem; }
+.ow-grid li { rotate: -1.2deg; transition: rotate .5s var(--ease); }
+.ow-grid li:nth-child(even) { rotate: 1.1deg; }
+.ow-grid li:nth-child(3n) { rotate: -.5deg; }
+.ow-grid li:hover, .ow-grid li:focus-within { rotate: 0deg; }
+
+.env-card {
+    min-height: 200px;
+    border-radius: 18px;
+    box-shadow: 0 22px 40px -16px rgba(var(--scene-shadow-rgb),.55), inset 0 -40px 60px -40px rgba(var(--scene-shadow-rgb),.12);
+}
+.env-card:hover { transform: translateY(-8px); box-shadow: 0 34px 56px -18px rgba(var(--scene-shadow-rgb),.65), 0 0 40px -8px var(--env-flap); }
+.env-card .ow-title { font-size: 1.12rem; }
+.env-card .ow-desc { font-size: .86rem; opacity: .85; }
+
+/* Wax dot at the flap tip: the letter is sealed until the flap lifts */
+.env-card::after {
+    content: "";
+    position: absolute; left: 50%; top: 55%; z-index: 3;
+    width: 26px; height: 26px; translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff8, transparent 45%), var(--env-bd);
+    box-shadow: 0 3px 8px rgba(var(--scene-shadow-rgb),.3), inset 0 -2px 3px rgba(var(--scene-shadow-rgb),.2);
+    transition: opacity .3s var(--ease), scale .4s var(--ease);
+}
+.env-card:hover::after { opacity: 0; scale: .5; }
+
+/* One orchestrated entrance for the cards */
+.view-openwhen.is-active .ow-grid li { animation: cardIn .9s var(--ease) both; }
+.view-openwhen.is-active .ow-grid li:nth-child(2) { animation-delay: .1s; }
+.view-openwhen.is-active .ow-grid li:nth-child(3) { animation-delay: .2s; }
+.view-openwhen.is-active .ow-grid li:nth-child(4) { animation-delay: .3s; }
+.view-openwhen.is-active .ow-grid li:nth-child(5) { animation-delay: .4s; }
+@keyframes cardIn { from { opacity: 0; translate: 0 26px; } to { opacity: 1; translate: 0 0; } }
+
+.view-openwhen .line-end p { color: rgba(var(--scene-fg-rgb),.7); }
+
+/* ---------- Modals get a frosted backdrop ---------- */
+.overlay.is-visible { backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); background: rgba(var(--ink-rgb),.7); }
+
+@media (prefers-reduced-motion: reduce) {
+    .view-main::before, .view-openwhen::before, #greetingWrap .envelope, .view-openwhen .ow-grid li { animation: none !important; }
+}

@@ -1,0 +1,123 @@
+/* =========================================================
+   INTRO: "the vault opens" (load AFTER login.css)
+   Same night sky as the login. It slowly turns toward dawn
+   as she moves through the four steps.
+   ========================================================= */
+
+@property --dawn { syntax: '<number>'; inherits: false; initial-value: .18; }
+
+.view-intro {
+    --dawn: .18;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition: --dawn 1.6s var(--ease), opacity .6s var(--ease), transform .7s var(--ease);
+    background:
+        radial-gradient(80% 46% at 50% 115%, rgba(var(--horizon-rgb),var(--dawn)), transparent 72%),
+        radial-gradient(120% 85% at 50% -10%, var(--scene-top) 0%, var(--scene-mid) 52%, var(--scene-bottom) 100%);
+}
+.view-intro:has([data-step="2"].is-active) { --dawn: .3; }
+.view-intro:has([data-step="3"].is-active) { --dawn: .42; }
+.view-intro:has([data-step="4"].is-active) { --dawn: .62; }
+
+.view-intro::before {
+    content: "";
+    position: absolute; inset: -25%; z-index: -1;
+    background:
+        radial-gradient(34% 26% at 78% 26%, rgba(var(--glow-a-rgb),.42), transparent 70%),
+        radial-gradient(30% 24% at 20% 70%, rgba(var(--glow-c-rgb),.38), transparent 70%),
+        radial-gradient(24% 20% at 40% 14%, rgba(var(--glow-b-rgb),.22), transparent 70%);
+    filter: blur(36px);
+    animation: loginDrift 30s ease-in-out infinite alternate-reverse;
+}
+
+.intro-stage { gap: 2.5rem; }
+.intro-messages { min-height: clamp(300px, 46vh, 360px); }
+.intro-step { inset: 0; align-content: center; gap: 1.1rem; }
+
+/* Copy hierarchy: script whisper, headline, one plain line, one action */
+.intro-script {
+    font-family: "Mrs Saint Delafield", cursive;
+    font-size: clamp(2.8rem, 9vw, 4rem);
+    line-height: .8;
+    color: var(--scene-fg);
+    transform: rotate(-3deg);
+    text-shadow: 0 0 36px rgba(var(--scene-glow-rgb),.45);
+    opacity: 0;
+}
+.intro-title { font-size: clamp(1.7rem, 5vw, 2.6rem); font-weight: 600; line-height: 1.22; max-width: 24ch; }
+.intro-title .w { display: inline-block; opacity: 0; }
+.intro-sub { max-width: 30ch; font-size: .98rem; color: rgba(var(--scene-fg-rgb),.74); opacity: 0; }
+
+.intro-step.is-active .intro-script { animation: introFade 1s var(--ease) .05s forwards; }
+.intro-step.is-active .intro-title .w { animation: wordIn .9s var(--ease) calc(.25s + var(--i) * 85ms) forwards; }
+.intro-step.is-active .intro-sub { animation: introFade 1s var(--ease) .95s forwards; }
+.intro-step .intro-next,
+.intro-step .device-group { opacity: 0; }
+.intro-step.is-active .device-group { animation: introFade .9s var(--ease) 1s forwards; }
+.intro-step.is-active .intro-next { animation: introFade .9s var(--ease) 1.25s forwards; }
+.intro-step.is-active .intro-next.is-ready { animation: introFade .1s forwards, pulseReady 1.8s infinite; }
+
+@keyframes wordIn  { from { opacity: 0; filter: blur(10px); transform: translateY(.45em); } to { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes introFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Button: names the action, no "(click to continue)" */
+.view-intro .intro-next {
+    border-radius: 999px;
+    padding: .7rem 2rem;
+    margin-top: .6rem;
+    color: var(--scene-btn-fg);
+    background: var(--scene-btn-bg);
+    border-color: var(--scene-btn-bg);
+    font-weight: 600;
+}
+.view-intro .intro-next:hover:not(:disabled) { background: var(--scene-btn-hover); box-shadow: 0 0 34px -4px rgba(var(--scene-glow-rgb),.5); }
+.view-intro .intro-next:disabled { background: transparent; color: rgba(var(--scene-fg-rgb),.5); border-color: rgba(var(--scene-fg-rgb),.2); opacity: .55; }
+.view-intro .intro-next.is-ready { background: var(--scene-btn-bg); color: var(--scene-btn-fg); }
+
+/* Device choices: each one draws the screen it stands for */
+.device-group { gap: 1rem; margin-top: .4rem; }
+.device-btn {
+    display: grid; justify-items: center; gap: .6rem;
+    min-width: 108px; padding: 1rem 1rem .8rem;
+    border-radius: 18px;
+    border-color: rgba(var(--scene-line-rgb),.35);
+    background: rgba(var(--scene-fg-rgb),.05);
+}
+.device-btn::before {
+    content: ""; display: block;
+    border: 1.5px solid currentColor; border-radius: 4px;
+    width: 40px; height: 26px;
+}
+.device-btn[data-device="mobile"]::before { width: 17px; height: 30px; border-radius: 5px; }
+.device-btn[data-device="tablet"]::before { width: 28px; height: 36px; border-radius: 5px; }
+.device-btn[data-device="laptop"]::before { width: 44px; height: 28px; border-radius: 4px 4px 1px 1px; border-bottom-width: 4px; }
+.device-btn[aria-pressed="true"] { box-shadow: 0 0 30px -6px rgba(var(--scene-glow-rgb),.55); }
+
+/* Progress: four stars that join up as the steps go by (a real sequence) */
+.intro-progress { display: flex; align-items: center; }
+.intro-progress i {
+    position: relative; width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(var(--scene-fg-rgb),.22);
+    transition: background-color .8s var(--ease), box-shadow .8s var(--ease);
+}
+.intro-progress i + i { margin-left: 34px; }
+.intro-progress i + i::before {
+    content: ""; position: absolute; right: 100%; top: 50%; width: 34px; height: 1px;
+    background: rgba(var(--scene-fg-rgb),.18); transform-origin: right; transform: scaleX(1);
+    transition: background-color .8s var(--ease);
+}
+.view-intro:has([data-step="1"].is-active) .intro-progress i:nth-child(-n+1),
+.view-intro:has([data-step="2"].is-active) .intro-progress i:nth-child(-n+2),
+.view-intro:has([data-step="3"].is-active) .intro-progress i:nth-child(-n+3),
+.view-intro:has([data-step="4"].is-active) .intro-progress i:nth-child(-n+4) {
+    background: var(--scene-fg); box-shadow: 0 0 12px 1px rgba(var(--scene-glow-rgb),.7);
+}
+.view-intro:has([data-step="2"].is-active) .intro-progress i:nth-child(-n+2)::before,
+.view-intro:has([data-step="3"].is-active) .intro-progress i:nth-child(-n+3)::before,
+.view-intro:has([data-step="4"].is-active) .intro-progress i:nth-child(-n+4)::before { background: rgba(var(--scene-fg-rgb),.6); }
+
+@media (prefers-reduced-motion: reduce) {
+    .view-intro::before, .intro-step.is-active * { animation: none !important; }
+    .intro-script, .intro-sub, .intro-title .w, .intro-step .intro-next, .intro-step .device-group { opacity: 1; }
+}

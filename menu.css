@@ -1,0 +1,94 @@
+/* Hamburger menu: ADDITIVE styles (load after style.css) */
+:root { --menu-css: 1; }
+
+html.hb-lock { overflow: hidden; }
+
+/* ---------- Hamburger button ---------- */
+.hb {
+    position: fixed; top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); z-index: 60;
+    width: 48px; height: 48px; padding: 0; display: grid; place-items: center; cursor: pointer;
+    border-radius: 15px; border: 1px solid var(--border, #9CC3E6); background: var(--surface, #fff); color: var(--navy, #04245a);
+    box-shadow: 0 10px 24px -12px rgba(var(--ink-rgb),.4);
+    opacity: 0; visibility: hidden; transform: translateY(-12px) scale(.88);
+    transition: opacity .35s ease, transform .4s cubic-bezier(.2,.8,.2,1), visibility 0s linear .4s, box-shadow .25s ease, background-color .25s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.hb.is-shown { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.hb:hover { background: var(--ice, #EAF4FD); box-shadow: 0 14px 28px -12px rgba(var(--ink-rgb),.5); transform: translateY(-2px); }
+.hb:active { transform: scale(.94); }
+.hb:focus-visible { outline: 3px solid rgba(var(--steel-rgb),.6); outline-offset: 3px; }
+.hb.is-open { z-index: 100; }
+
+.hb-lines { position: relative; width: 22px; height: 16px; display: block; }
+.hb-lines i {
+    position: absolute; left: 0; height: 2.5px; border-radius: 2px; background: currentColor;
+    transition: transform .45s cubic-bezier(.2,.8,.2,1), width .3s ease, top .3s ease, opacity .2s ease;
+}
+.hb-lines i:nth-child(1) { top: 0; width: 100%; }
+.hb-lines i:nth-child(2) { top: 6.75px; width: 68%; }
+.hb-lines i:nth-child(3) { top: 13.5px; width: 100%; }
+.hb:hover .hb-lines i:nth-child(1) { transform: translateX(2px); }
+.hb:hover .hb-lines i:nth-child(2) { width: 100%; }
+.hb:hover .hb-lines i:nth-child(3) { transform: translateX(-2px); }
+.hb.is-open .hb-lines i:nth-child(1) { top: 6.75px; transform: rotate(45deg); }
+.hb.is-open .hb-lines i:nth-child(2) { opacity: 0; width: 0; }
+.hb.is-open .hb-lines i:nth-child(3) { top: 6.75px; transform: rotate(-45deg); }
+
+/* ---------- Backdrop ---------- */
+.hb-backdrop {
+    position: fixed; inset: 0; z-index: 90; background: rgba(var(--ink-rgb),.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility 0s linear .4s;
+}
+.hb-backdrop.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+/* ---------- Panel ---------- */
+.hb-panel {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 95; width: min(86vw, 340px); box-sizing: border-box;
+    display: flex; flex-direction: column; padding: 84px 1.1rem 1.5rem; overflow-y: auto;
+    background: linear-gradient(180deg, var(--panel-a), var(--panel-b)); border-left: 1px solid var(--border, #9CC3E6);
+    box-shadow: -24px 0 50px -20px rgba(var(--ink-rgb),.45);
+    transform: translateX(105%); visibility: hidden;
+    transition: transform .55s cubic-bezier(.2,.8,.2,1), visibility 0s linear .55s;
+}
+.hb-panel.is-open { transform: none; visibility: visible; transition-delay: 0s; }
+
+.hb-head { position: absolute; top: 18px; left: 1.4rem; right: 76px; display: grid; gap: .1rem; }
+.hb-kicker { font-size: .74rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted, #4a6a96); }
+.hb-title { font-size: 1.2rem; font-weight: 700; color: var(--navy, #04245a); line-height: 1.2; }
+
+.hb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.hb-list > li { opacity: 0; }
+.hb-panel.is-open .hb-list > li { animation: hbIn .55s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(.12s + var(--i, 0) * .07s); }
+@keyframes hbIn { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: none; } }
+
+.hb-group { margin: 1.1rem 1rem .25rem; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted, #4a6a96); }
+.hb-group-li { opacity: 0; }
+
+.hb-item {
+    position: relative; display: grid; gap: .15rem; width: 100%; box-sizing: border-box; text-align: left;
+    padding: .85rem 2.4rem .85rem 1.2rem; border-radius: 14px; border: 1px solid transparent; background: transparent;
+    color: var(--ink, #021024); font: inherit; cursor: pointer; overflow: hidden; -webkit-tap-highlight-color: transparent;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), background-color .25s ease, border-color .25s ease, box-shadow .3s ease;
+}
+.hb-item::before {
+    content: ""; position: absolute; left: 0; top: 50%; width: 4px; height: 0; border-radius: 0 4px 4px 0; background: var(--steel, #5483B3);
+    transform: translateY(-50%); transition: height .3s cubic-bezier(.2,.8,.2,1);
+}
+.hb-item::after {
+    content: "\2192"; position: absolute; right: 1.1rem; top: 50%; color: var(--steel, #5483B3); font-weight: 700;
+    opacity: 0; transform: translate(-10px, -50%); transition: opacity .3s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.hb-item:hover, .hb-item:focus-visible { background: var(--panel-raised); border-color: var(--border, #9CC3E6); transform: translateX(6px); box-shadow: 0 12px 24px -16px rgba(var(--ink-rgb),.45); }
+.hb-item:hover::before, .hb-item:focus-visible::before { height: 60%; }
+.hb-item:hover::after, .hb-item:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
+.hb-item:focus-visible { outline: 3px solid rgba(var(--steel-rgb),.5); outline-offset: 2px; }
+.hb-item:active { transform: translateX(3px) scale(.985); }
+.hb-item[aria-current="page"] { background: var(--ice, #EAF4FD); border-color: var(--sky, #B9DAF5); }
+.hb-item[aria-current="page"]::before { height: 60%; }
+.hb-label { font-weight: 700; color: var(--navy, #04245a); line-height: 1.3; }
+.hb-desc { font-size: .8rem; line-height: 1.4; color: var(--text-muted, #4a6a96); }
+
+@media (prefers-reduced-motion: reduce) {
+    .hb, .hb-lines i, .hb-backdrop, .hb-panel, .hb-item, .hb-item::before, .hb-item::after { transition: none !important; }
+    .hb-panel.is-open .hb-list > li { animation: none; opacity: 1; }
+}

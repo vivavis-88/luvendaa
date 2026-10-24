@@ -1,0 +1,204 @@
+/* =========================================================
+   LOGIN: "after dark" redesign (v2)
+   Load AFTER style.css / menu.css / jar.css.
+   Needs the <div class="login-sky"> block inside .view-login.
+   ========================================================= */
+
+.view-login {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--scene-fg);
+    background:
+        radial-gradient(70% 40% at 50% 112%, rgba(var(--horizon-rgb),.38), transparent 70%),   /* faint dawn on the horizon */
+        radial-gradient(120% 85% at 50% -10%, var(--scene-top) 0%, var(--scene-mid) 52%, var(--scene-bottom) 100%);
+}
+
+/* Aurora: three slow ribbons of light in different tints */
+.view-login::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    z-index: -1;
+    background:
+        radial-gradient(34% 26% at 20% 28%, rgba(var(--glow-a-rgb),.50), transparent 70%),
+        radial-gradient(30% 24% at 78% 66%, rgba(var(--glow-c-rgb),.42), transparent 70%),
+        radial-gradient(26% 20% at 64% 18%, rgba(var(--glow-b-rgb),.26), transparent 70%),
+        radial-gradient(22% 18% at 36% 78%, rgba(var(--glow-d-rgb),.16), transparent 70%);
+    filter: blur(36px);
+    animation: loginDrift 26s ease-in-out infinite alternate;
+}
+@keyframes loginDrift {
+    0%   { transform: translate3d(-3%, -2%, 0) scale(1) rotate(0deg); }
+    100% { transform: translate3d(4%, 3%, 0) scale(1.12) rotate(5deg); }
+}
+
+/* Sky layer: twinkling stars + rising specks of light */
+.login-sky { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.login-sky::before, .login-sky::after { content: ""; position: absolute; inset: 0; }
+.login-sky::before {
+    background-image:
+        radial-gradient(1.5px 1.5px at 8% 14%, rgba(var(--star-rgb),.95) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 17% 62%, rgba(var(--star-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 26% 33%, rgba(var(--star-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 34% 80%, rgba(var(--star-rgb),.85) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 43% 9%,  rgba(var(--star-rgb),.95) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 52% 47%, rgba(var(--star-rgb),.8) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 61% 88%, rgba(var(--star-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 69% 22%, rgba(var(--star-rgb),.95) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 77% 58%, rgba(var(--star-rgb),.85) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 85% 12%, rgba(var(--star-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 92% 70%, rgba(var(--star-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 96% 38%, rgba(var(--star-rgb),.8) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 4% 90%,  rgba(var(--star-rgb),.85) 50%, transparent 52%);
+    animation: twinkleA 5.5s ease-in-out infinite;
+}
+.login-sky::after {
+    background-image:
+        radial-gradient(1px 1px at 12% 40%, rgba(var(--scene-fg-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 22% 8%,  rgba(var(--scene-fg-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 31% 55%, rgba(var(--scene-fg-rgb),.8) 50%, transparent 52%),
+        radial-gradient(1px 1px at 39% 24%, rgba(var(--scene-fg-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 47% 92%, rgba(var(--scene-fg-rgb),.8) 50%, transparent 52%),
+        radial-gradient(1px 1px at 56% 30%, rgba(var(--scene-fg-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 64% 66%, rgba(var(--scene-fg-rgb),.85) 50%, transparent 52%),
+        radial-gradient(1px 1px at 73% 6%,  rgba(var(--scene-fg-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 81% 84%, rgba(var(--scene-fg-rgb),.8) 50%, transparent 52%),
+        radial-gradient(1px 1px at 88% 48%, rgba(var(--scene-fg-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 94% 20%, rgba(var(--scene-fg-rgb),.85) 50%, transparent 52%),
+        radial-gradient(1px 1px at 3% 52%,  rgba(var(--scene-fg-rgb),.8) 50%, transparent 52%),
+        radial-gradient(1px 1px at 58% 14%, rgba(var(--scene-fg-rgb),.9) 50%, transparent 52%),
+        radial-gradient(1px 1px at 71% 40%, rgba(var(--scene-fg-rgb),.85) 50%, transparent 52%);
+    animation: twinkleB 7.5s ease-in-out infinite;
+}
+@keyframes twinkleA { 0%, 100% { opacity: .95; } 50% { opacity: .35; } }
+@keyframes twinkleB { 0%, 100% { opacity: .3; } 50% { opacity: .95; } }
+
+.login-sky i {
+    position: absolute;
+    left: var(--x);
+    bottom: -14vmin;
+    width: var(--s);
+    height: var(--s);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--scene-glow-rgb),.55), rgba(var(--scene-glow-rgb),0) 70%);
+    opacity: 0;
+    animation: skyRise var(--d) linear var(--dl) infinite;
+}
+.login-sky i:nth-child(1) { --x: 10%; --s: 26px; --d: 24s; --dl: -4s;  --sw: 40px; }
+.login-sky i:nth-child(2) { --x: 28%; --s: 14px; --d: 30s; --dl: -16s; --sw: -30px; }
+.login-sky i:nth-child(3) { --x: 46%; --s: 34px; --d: 36s; --dl: -9s;  --sw: 50px; }
+.login-sky i:nth-child(4) { --x: 63%; --s: 18px; --d: 27s; --dl: -21s; --sw: -40px; }
+.login-sky i:nth-child(5) { --x: 80%; --s: 28px; --d: 33s; --dl: -2s;  --sw: 30px; }
+.login-sky i:nth-child(6) { --x: 92%; --s: 12px; --d: 22s; --dl: -12s; --sw: -20px; }
+@keyframes skyRise {
+    0%   { opacity: 0; transform: translate3d(0, 0, 0); }
+    15%  { opacity: .9; }
+    80%  { opacity: .6; }
+    100% { opacity: 0; transform: translate3d(var(--sw), -118vh, 0); }
+}
+
+/* Unlock bloom */
+.view-login::after {
+    content: "";
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 24px; height: 24px;
+    margin: -12px 0 0 -12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--scene-glow-rgb),.95), rgba(var(--scene-glow-rgb),0) 70%);
+    opacity: 0;
+    transform: scale(0);
+    z-index: -1;
+    pointer-events: none;
+}
+.view-login.is-unlocking::after { animation: loginBloom 1.3s cubic-bezier(.3,.6,.3,1) forwards; }
+@keyframes loginBloom {
+    0%   { opacity: 0; transform: scale(0); }
+    25%  { opacity: 1; }
+    100% { opacity: 0; transform: scale(120); }
+}
+
+/* Card: no box, type floats on the dark */
+.view-login .login-card {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    max-width: 380px;
+    gap: .9rem;
+    text-align: center;
+    transform: none !important;
+    transition: opacity .9s var(--ease), filter .9s var(--ease), scale .9s var(--ease);
+}
+.view-login.is-unlocking .login-card { opacity: 0; filter: blur(8px); scale: .96; }
+.view-login .login-card .line-art { display: none; }
+
+/* Handwritten "for Avee", with a slow breathing glow */
+.view-login .label {
+    font-family: "Mrs Saint Delafield", cursive;
+    font-weight: 400;
+    font-size: clamp(5rem, 19vw, 7.25rem);
+    line-height: .75;
+    color: var(--scene-fg);
+    margin: 0 0 .35rem;
+    transform: rotate(-4deg);
+    animation: labelGlow 6s ease-in-out infinite;
+}
+@keyframes labelGlow {
+    0%, 100% { text-shadow: 0 0 26px rgba(var(--scene-glow-rgb),.28); }
+    50%      { text-shadow: 0 0 52px rgba(var(--scene-glow-rgb),.6); }
+}
+
+.view-login h1 { font-size: clamp(1.55rem, 5.6vw, 2rem); font-weight: 600; color: var(--scene-strong); }
+.view-login .muted { color: rgba(var(--scene-fg-rgb),.72); font-size: .92rem; }
+
+/* Input: soft frosted pill, no line, no glow */
+.view-login .field {
+    background: rgba(var(--scene-fg-rgb),.07);
+    border: 1px solid rgba(var(--scene-fg-rgb),.14);
+    border-radius: 14px;
+    margin-top: 1rem;
+    box-shadow: none;
+}
+.view-login .field:focus-within {
+    background: rgba(var(--scene-fg-rgb),.1);
+    border-color: rgba(var(--scene-fg-rgb),.38);
+    box-shadow: none;
+}
+.view-login .field input { color: var(--scene-strong); }
+/* FIX: keep the real characters hidden so only the dots show */
+.view-login .field.is-masked input { color: transparent; caret-color: transparent; }
+.view-login .field input::placeholder { color: rgba(var(--scene-fg-rgb),.42); }
+.view-login .dots i { background: var(--scene-fg); box-shadow: none; }
+.view-login .field-toggle { color: var(--scene-accent); }
+.view-login .field-toggle:hover { color: var(--scene-strong); }
+.view-login .field.is-error { border-color: var(--scene-error); }
+.view-login .error { color: var(--scene-error); }
+
+/* Button */
+.view-login .btn-primary {
+    background: var(--scene-btn-bg);
+    color: var(--scene-btn-fg);
+    border-radius: 999px;
+    min-height: 54px;
+    margin-top: .8rem;
+}
+.view-login .btn-primary:hover { background: var(--scene-btn-hover); box-shadow: 0 0 36px -4px rgba(var(--scene-glow-rgb),.5); }
+
+:focus-visible { outline-color: var(--focus-ring); }
+
+/* One orchestrated entrance */
+.view-login.is-active .login-card > * { animation: loginRise .9s var(--ease) both; }
+.view-login.is-active .login-card > .label { animation: loginRise .9s var(--ease) both, labelGlow 6s ease-in-out 1s infinite; }
+.view-login.is-active .login-card > :nth-child(3) { animation-delay: .2s; }
+.view-login.is-active .login-card > :nth-child(4) { animation-delay: .3s; }
+.view-login.is-active .login-card > :nth-child(5) { animation-delay: .4s; }
+.view-login.is-active .login-card > :nth-child(7) { animation-delay: .5s; }
+@keyframes loginRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .view-login::before, .login-sky::before, .login-sky::after, .login-sky i,
+    .view-login .label, .view-login.is-active .login-card > *, .view-login.is-unlocking::after { animation: none; }
+    .login-sky i { display: none; }
+}
