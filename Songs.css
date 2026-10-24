@@ -232,3 +232,51 @@ html[data-theme-gate] .np { display: none; }
 
 .sg-export-pw { display: flex; gap: .4rem; justify-content: center; align-items: center; }
 .sg-export-pw input { width: 9rem; padding: .45rem .7rem; border-radius: 999px; border: 1px solid var(--sg-line); background: transparent; color: inherit; font: inherit; font-size: .85rem; }
+
+
+/* ================= Phones & tablets: player sits at the top, can be dragged anywhere ================= */
+.np-card { width: min(380px, calc(100vw - 20px)); position: relative; }
+.np-pill { position: relative; }
+.np.is-min .np-card { position: absolute; right: 0; top: 0; }
+.np.is-free { left: var(--x); top: var(--y); right: auto; bottom: auto; width: max-content; }
+.np.is-free.is-hidden { transform: none; }
+.np.is-dragging, .np.is-dragging .np-card, .np.is-dragging .np-pill { transition: none !important; }
+.np-grip { touch-action: none; cursor: grab; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+.np.is-dragging .np-grip { cursor: grabbing; }
+.np-card .np-grip { position: absolute; top: 0; left: 50%; translate: -50% 0; width: 64px; height: 20px; z-index: 2; }
+.np-card .np-grip::before { content: ""; position: absolute; left: 50%; top: 6px; translate: -50% 0; width: 32px; height: 4px; border-radius: 4px; background: var(--sg-muted); opacity: .45; }
+.np-pill .np-grip { width: 16px; height: 34px; margin-left: 2px; background: radial-gradient(circle, var(--sg-muted) 1.4px, transparent 1.8px) center / 6px 8px repeat-y; opacity: .55; }
+.np-card { padding-top: 1rem; }
+@media (max-width: 820px) {
+    .np:not(.is-free) { bottom: auto; top: max(10px, env(safe-area-inset-top)); left: 10px; right: 10px; }
+    .np:not(.is-free).is-hidden { transform: translateY(-18px); }
+    .np:not(.is-free) .np-card, .np:not(.is-free) .np-pill { transform-origin: top center; }
+    .np-top .sg-disc { --d: 40px; }
+}
+@media (max-width: 360px) { .np-bottom .sg-btn { width: 30px; height: 30px; } .np-bottom .sg-btn.sg-main { width: 36px; height: 36px; } }
+
+/* ================= Glass (frosted) look ================= */
+.np-card, .np-pill, .sg-display, .view-songs .sg-player {
+    background: linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.38));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sg-card-a) 66%, transparent), color-mix(in srgb, var(--sg-card-b) 48%, transparent));
+    -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5);
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow: 0 18px 40px -18px rgba(var(--ink-rgb), .5), inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+/* ================= Song thumbnail: on the disc and softly blurred behind the card ================= */
+.has-art .sg-disc, .has-art.sg-disc {
+    background:
+        radial-gradient(circle at 50% 50%, var(--surface, #fff) 0 5%, rgba(0,0,0,.5) 5.5% 11%, transparent 11.5%),
+        repeating-radial-gradient(circle at 50% 50%, transparent 0 2.2px, rgba(255,255,255,.07) 2.2px 3px),
+        var(--art) center / cover no-repeat, var(--navy, #052659);
+}
+.np-card, .sg-display, .view-songs .sg-player, .np-pill { isolation: isolate; }
+.np-card, .sg-display, .view-songs .sg-player { position: relative; overflow: hidden; }
+.np-card::before, .sg-display::before, .view-songs .sg-player::before, .np-pill::before {
+    content: ""; position: absolute; inset: -20%; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: var(--art, none) center / cover no-repeat; filter: blur(24px) saturate(1.5);
+    opacity: 0; transition: opacity .5s ease;
+}
+.has-art .np-card::before, .has-art.sg-display::before, .has-art.sg-player::before, .has-art .np-pill::before { opacity: .42; }
+.np-pill { overflow: hidden; }
